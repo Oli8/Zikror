@@ -11,8 +11,7 @@
 </p>
 
 <p>
-  <strong>Password:</strong>
-  <%= @user.password %>
+  <%= gravatar @user %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
