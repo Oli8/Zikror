@@ -61,7 +61,6 @@ div {
 
 #error_explanation {
   width: 450px;
-  border: 2px solid red;
   padding: 7px;
   padding-bottom: 0;
   margin-bottom: 20px;
@@ -81,6 +80,7 @@ div {
   ul li {
     font-size: 12px;
     list-style: square;
+    padding-bottom: 10px;
   }
 }
 
