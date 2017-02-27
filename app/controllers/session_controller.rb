@@ -9,7 +9,6 @@ class SessionController < ApplicationController
   		puts 'ok'
   		log_in user
   		redirect_to user
-  		# format.html { redirect_to @user, notice: "Welcome Back!" }
   	else
   		puts 'nop'
   		flash.now[:notice] = 'Invalid parameters'
@@ -18,6 +17,9 @@ class SessionController < ApplicationController
   end
 
   def destroy
+	puts 'logout'
+	log_out
+	redirect_to root_url
   end
 
 end
