@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :is_owner, only: [:edit, :update]
 
   # GET /users
   # GET /users.json
@@ -10,7 +11,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
   end
 
   # GET /users/1/edit
@@ -68,4 +68,14 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:username, :mail, :password, :password_confirmation)
     end
+
+    def is_owner
+      return redirect_to root_path unless logged_in?
+
+      if !correct_user?
+        flash[:notice] = 'You are not authorized to access this page'
+        redirect_to user_path(current_user)
+      end
+    end
+
 end

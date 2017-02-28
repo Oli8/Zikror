@@ -16,4 +16,8 @@ module SessionHelper
 		session.delete(:user_id)
 		@current_user = nil
 	end
+
+	def correct_user?
+		params[:id].to_i == current_user.id
+	end
 end
