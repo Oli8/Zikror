@@ -13,11 +13,6 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  # GET /users/new
-  def new
-    @user = User.new
-  end
-
   # GET /users/1/edit
   def edit
   end
