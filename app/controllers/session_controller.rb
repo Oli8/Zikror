@@ -11,6 +11,7 @@ class SessionController < ApplicationController
   		log_in user
   		redirect_to user
   	else
+		@user = User.new
   		flash.now[:notice] = 'Invalid parameters'
   		render 'new'
   	end

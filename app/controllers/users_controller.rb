@@ -29,7 +29,7 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: "You've successfully signed up!" }
         format.json { render :show, status: :created, location: @user }
       else
-        format.html { render :new }
+        format.html { render 'session/new' }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
