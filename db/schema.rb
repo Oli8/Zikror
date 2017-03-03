@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170223160812) do
+ActiveRecord::Schema.define(version: 20170303140211) do
+
+  create_table "songs", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "title"
+    t.string   "artist"
+    t.integer  "year"
+    t.string   "genre"
+    t.boolean  "private"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "username"

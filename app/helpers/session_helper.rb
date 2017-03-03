@@ -20,4 +20,19 @@ module SessionHelper
 	def correct_user?
 		params[:id].to_i == current_user.id
 	end
+
+	def require_login
+		unless logged_in?
+			flash[:notice] = 'You are not authorized to access this page, please log in'
+			redirect_to root_path
+		end
+	end
+
+	def is_owner
+      if !correct_user?
+        flash[:notice] = 'You are not authorized to access this page'
+        redirect_to user_path(current_user)
+      end
+    end
+
 end
