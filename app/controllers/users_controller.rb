@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @artists = @user.songs.group(:artist).count.sort.reverse
   end
 
   # GET /users/1/edit
