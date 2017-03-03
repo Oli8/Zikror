@@ -30,5 +30,10 @@
   <%= @song.private %>
 </p>
 
+<p>
+  <%= @song.file.url %><br/>
+  <%= audio_tag(@song.file.url, autoplay: true, controls: true) %>
+</p>
+
 <%= link_to 'Edit', edit_song_path(@song) %> |
 <%= link_to 'Back', songs_path %>
