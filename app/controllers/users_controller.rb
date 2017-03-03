@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   http_basic_authenticate_with name: 'admin', password: 'Password1', only: :index
+  before_action :require_login, except: [:index]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :is_owner, only: [:edit, :update]
 
@@ -68,15 +69,6 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:username, :mail, :password, :password_confirmation)
-    end
-
-    def is_owner
-      return redirect_to root_path unless logged_in?
-
-      if !correct_user?
-        flash[:notice] = 'You are not authorized to access this page'
-        redirect_to user_path(current_user)
-      end
     end
 
 end

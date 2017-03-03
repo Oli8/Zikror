@@ -1,6 +1,8 @@
 class SongsController < ApplicationController
+  http_basic_authenticate_with name: 'admin', password: 'Password1', only: :index
+  before_action :require_login, except: [:index]
   before_action :set_song, only: [:show, :edit, :update, :destroy]
-
+  before_action :song_owner?, only: [:edit, :update]
   # GET /songs
   # GET /songs.json
   def index
@@ -70,5 +72,12 @@ class SongsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def song_params
       params.require(:song).permit(:id_user, :title, :artist, :year, :genre, :private, :file)
+    end
+
+    def song_owner?
+      unless Song.find(params[:id]).id_user == current_user.id
+        flash[:notice] = 'You are not authorized to access this page'
+        redirect_to :back
+      end
     end
 end
