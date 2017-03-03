@@ -1,6 +1,28 @@
 <h1>Editing Song</h1>
 
-<%= render 'form', song: @song %>
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<%= form_for(@song) do |f| %>
+			<%= f.label :title %>
+			<%= f.text_field :title %>
+
+			<%= f.label :artist %>
+			<%= f.text_field :artist %>
+
+			<%= f.label :year %>
+			<%= f.number_field :year %>
+
+			<%= f.label :genre %>
+			<%= f.text_field :genre %>
+			<br/><br/>
+			<%= f.submit "Update", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div>
+
+<p>
+	<%= link_to 'Destroy', @song, method: :delete, data: { confirm: 'Are you sure?' } %>
+</p>
 
 <%= link_to 'Show', @song %> |
 <%= link_to 'Back', songs_path %>

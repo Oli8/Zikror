@@ -16,7 +16,7 @@ class SongsController < ApplicationController
 
   # GET /songs/new
   def new
-    @song = Song.new
+    @song = current_user.songs.build
   end
 
   # GET /songs/1/edit
@@ -26,7 +26,7 @@ class SongsController < ApplicationController
   # POST /songs
   # POST /songs.json
   def create
-    @song = Song.new(song_params)
+    @song = current_user.songs.build(song_params)
 
     respond_to do |format|
       if @song.save
@@ -58,7 +58,7 @@ class SongsController < ApplicationController
   def destroy
     @song.destroy
     respond_to do |format|
-      format.html { redirect_to songs_url, notice: 'Song was successfully destroyed.' }
+      format.html { redirect_to user_path(current_user), notice: 'Song was successfully deleted.' }
       format.json { head :no_content }
     end
   end
@@ -71,11 +71,11 @@ class SongsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def song_params
-      params.require(:song).permit(:id_user, :title, :artist, :year, :genre, :private, :file)
+      params.require(:song).permit(:user_id, :title, :artist, :year, :genre, :private, :file)
     end
 
     def song_owner?
-      unless Song.find(params[:id]).id_user == current_user.id
+      unless Song.find(params[:id]).user_id == current_user.id
         flash[:notice] = 'You are not authorized to access this page'
         redirect_to :back
       end

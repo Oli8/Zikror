@@ -2,7 +2,7 @@
 
 <p>
   <strong>Id user:</strong>
-  <%= @song.id_user %>
+  <%= @song.user_id %>
 </p>
 
 <p>
@@ -31,8 +31,7 @@
 </p>
 
 <p>
-  <%= @song.file.url %><br/>
-  <%= audio_tag(@song.file.url, autoplay: true, controls: true) %>
+  <%= audio_tag(@song.file.url, autoplay: false, controls: true) %>
 </p>
 
 <%= link_to 'Edit', edit_song_path(@song) %> |
