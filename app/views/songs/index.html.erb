@@ -3,7 +3,7 @@
 <table>
   <thead>
     <tr>
-      <th>Id user</th>
+      <th>Owner</th>
       <th>Title</th>
       <th>Artist</th>
       <th>Year</th>
@@ -17,7 +17,7 @@
   <tbody>
     <% @songs.each do |song| %>
       <tr>
-        <td><%= song.user_id %></td>
+        <td><%= link_to song.user.username, user_path(song.user) %></td>
         <td><%= song.title %></td>
         <td><%= song.artist %></td>
         <td><%= song.year %></td>

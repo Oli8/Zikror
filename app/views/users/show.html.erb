@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Username:</strong>
   <%= @user.username %>
@@ -13,6 +11,19 @@
 <p>
   <%= gravatar @user %>
 </p>
+
+<% if @user.songs.size == 0 %>
+	<strong><%= "#{@user.username} has not uploaded any song yet" %></strong>
+<% end %>
+
+<h2>My songs</h2>
+
+<ul>
+	<% @user.songs.each do |song| %>
+		<li><%= link_to "#{song.title} - #{song.artist}", song_path(song) %></li>
+	<% end %>
+</ul>
+
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
