@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   http_basic_authenticate_with name: 'admin', password: 'Password1', only: :index
-  before_action :require_login, except: [:index]
+  before_action :require_login, except: [:index, :create]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :is_owner, only: [:edit, :update]
 
