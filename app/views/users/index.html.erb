@@ -4,7 +4,7 @@
 
 <%= form_tag('/users', method: 'get') do %>
   <%= label_tag(:username, 'username:') %>
-  <%= search_field_tag(:username) %>
+  <%= search_field_tag(:username, params[:username] || '') %>
   <%= submit_tag('search') %>
 <% end %>
 
@@ -32,6 +32,8 @@
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate %>
 
 <br>
 
