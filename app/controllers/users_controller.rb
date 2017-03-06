@@ -1,13 +1,16 @@
 class UsersController < ApplicationController
-  http_basic_authenticate_with name: 'admin', password: 'Password1', only: :index
-  before_action :require_login, except: [:index, :create]
+  before_action :require_login, except: [:create]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :is_owner, only: [:edit, :update]
 
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    unless params[:username].nil?
+      @users =  User.where("username LIKE ?", "%#{params[:username]}%")
+    else
+      @users = User.all
+    end
   end
 
   # GET /users/1

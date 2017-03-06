@@ -2,11 +2,17 @@
 
 <h1>Users</h1>
 
+<%= form_tag('/users', method: 'get') do %>
+  <%= label_tag(:username, 'username:') %>
+  <%= search_field_tag(:username) %>
+  <%= submit_tag('search') %>
+<% end %>
+
 <table>
   <thead>
     <tr>
-      <th>Username</th>
-      <th>Mail</th>
+      <th></th>
+      <th></th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,11 +20,14 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= user.username %></td>
-        <td><%= user.mail %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= gravatar(user, 40) %></td>
+        <td><%= link_to user.username, user %></td>
+        <% if current_user == user %>
+          <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <% end %>
+        <% if current_user.admin %>
+          <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
