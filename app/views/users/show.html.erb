@@ -20,7 +20,9 @@
 
 <ul>
 	<% @user.songs.each do |song| %>
-		<li><%= link_to "#{song.title} - #{song.artist}", song_path(song) %></li>
+		<% if !song.private || correct_user? %>
+			<li><%= link_to "#{song.title} - #{song.artist}", song_path(song) %></li>
+		<% end %>
 	<% end %>
 </ul>
 

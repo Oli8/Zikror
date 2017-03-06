@@ -7,9 +7,10 @@ class SongsController < ApplicationController
   def index
     @datas = Song.pluck(:artist, :title).flatten.uniq
     unless params[:query].nil?
-      @songs =  Song.where("title LIKE ? OR artist LIKE ?", "%#{params[:query]}%", "%#{params[:query]}%").paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
+      @songs =  Song.where("(title LIKE ? OR artist LIKE ?) AND private = ?", "%#{params[:query]}%", "%#{params[:query]}%", false).paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
+      flash.now[:notice] = "Nothing found for #{params[:query]}" if @songs.empty?
     else
-      @songs = Song.all.paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
+      @songs = Song.where('private = ?', false).paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
     end
   end
 
