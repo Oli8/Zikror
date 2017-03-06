@@ -1,7 +1,8 @@
 class SongsController < ApplicationController
   before_action :require_login
+  before_action :check_access, only: [:show]
   before_action :set_song, only: [:show, :edit, :update, :destroy]
-  before_action :song_owner?, only: [:edit, :update]
+  before_action :check_owner, only: [:edit, :update]
   # GET /songs
   # GET /songs.json
   def index
@@ -79,10 +80,22 @@ class SongsController < ApplicationController
       params.require(:song).permit(:user_id, :title, :artist, :year, :genre, :private, :file)
     end
 
-    def song_owner?
-      unless Song.find(params[:id]).user_id == current_user.id
+    def check_owner
+      unless song_owner?
         flash[:notice] = 'You are not authorized to access this page'
         redirect_to :back
       end
     end
+
+    def song_owner?
+      Song.find(params[:id]).user_id == current_user.id
+    end
+
+    def check_access
+      if Song.find(params[:id]).private && !song_owner?
+        flash[:notice] = 'You are not authorized to access this page'
+        redirect_to songs_path
+      end
+    end
+
 end
