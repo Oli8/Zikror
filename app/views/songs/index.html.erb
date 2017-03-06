@@ -1,5 +1,16 @@
 <h1>Songs</h1>
 
+<%= form_tag('/songs', method: 'get') do %>
+  <%= label_tag(:query, 'Title or artist:') %>
+  <%= search_field_tag(:query, params[:query] || '', list: 'datas') %>
+  <datalist id="datas">
+    <% @datas.each do |d| %>
+      <option value="<%= d %>">
+    <% end %>
+  </datalist>
+  <%= submit_tag('search') %>
+<% end %>
+
 <table>
   <thead>
     <tr>
@@ -8,8 +19,6 @@
       <th>Artist</th>
       <th>Year</th>
       <th>Genre</th>
-      <th>Private</th>
-      <th>File</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -22,15 +31,19 @@
         <td><%= song.artist %></td>
         <td><%= song.year %></td>
         <td><%= song.genre %></td>
-        <td><%= song.private %></td>
-        <td><%= song.file.url %></td>
         <td><%= link_to 'Show', song %></td>
-        <td><%= link_to 'Edit', edit_song_path(song) %></td>
-        <td><%= link_to 'Destroy', song, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user == song.user %>
+          <td><%= link_to 'Edit', edit_song_path(song) %></td>
+        <% end %>
+        <% if current_user.admin %>
+          <td><%= link_to 'Destroy', song, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate %>
 
 <br>
 

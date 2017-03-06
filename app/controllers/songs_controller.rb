@@ -1,12 +1,16 @@
 class SongsController < ApplicationController
-  http_basic_authenticate_with name: 'admin', password: 'Password1', only: :index
-  before_action :require_login, except: [:index]
+  before_action :require_login
   before_action :set_song, only: [:show, :edit, :update, :destroy]
   before_action :song_owner?, only: [:edit, :update]
   # GET /songs
   # GET /songs.json
   def index
-    @songs = Song.all
+    @datas = Song.pluck(:artist, :title).flatten.uniq
+    unless params[:query].nil?
+      @songs =  Song.where("title LIKE ? OR artist LIKE ?", "%#{params[:query]}%", "%#{params[:query]}%").paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
+    else
+      @songs = Song.all.paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
+    end
   end
 
   # GET /songs/1
