@@ -8,6 +8,7 @@
       <th>User</th>
       <th>Name</th>
       <th>Description</th>
+      <th>Image</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -18,6 +19,9 @@
         <td><%= playlist.user_id %></td>
         <td><%= playlist.name %></td>
         <td><%= playlist.description %></td>
+        <% if playlist.image_file_name %>
+          <td><%= image_tag(playlist.image.url) %></td>
+        <% end %>
         <td><%= link_to 'Show', playlist %></td>
         <td><%= link_to 'Edit', edit_playlist_path(playlist) %></td>
         <td><%= link_to 'Destroy', playlist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
