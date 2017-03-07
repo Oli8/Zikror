@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :playlists
   resources :songs
   resources :users, :except => [:new]
   get '/login', to: 'session#new'
