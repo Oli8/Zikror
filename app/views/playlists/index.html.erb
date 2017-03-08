@@ -16,7 +16,7 @@
   <tbody>
     <% @playlists.each do |playlist| %>
       <tr>
-        <td><%= playlist.user_id %></td>
+        <td><%= playlist.user.username %></td>
         <td><%= playlist.name %></td>
         <td><%= playlist.description %></td>
         <% if playlist.image_file_name %>
