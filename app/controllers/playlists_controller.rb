@@ -1,4 +1,6 @@
 class PlaylistsController < ApplicationController
+  before_action :require_login
+  before_action :check_owner, only: [:edit, :update]
   before_action :set_playlist, only: [:show, :edit, :update, :destroy]
 
   # GET /playlists
@@ -72,5 +74,16 @@ class PlaylistsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def playlist_params
       params.require(:playlist).permit(:user_id, :name, :description, :image)
+    end
+
+    def playlist_owner?
+      Playlist.find(params[:id]).user_id == current_user.id
+    end
+
+    def check_owner
+      unless playlist_owner?
+        flash[:notice] = 'You are not authorized to access this page'
+        redirect_to :back
+      end
     end
 end
