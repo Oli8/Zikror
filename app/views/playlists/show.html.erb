@@ -1,8 +1,12 @@
-<p id="notice"><%= notice %></p>
+<% unless @playlist.image_file_name.nil? %>
+	<p>
+		<%= image_tag @playlist.image.url %>
+	</p>
+<% end %>
 
 <p>
   <strong>User:</strong>
-  <%= @playlist.user_id %>
+  <%= @playlist.user.username %>
 </p>
 
 <p>
@@ -14,6 +18,20 @@
   <strong>Description:</strong>
   <%= @playlist.description %>
 </p>
+
+<p>
+  <h3>Songs:</h3>
+  <% unless @playlist.songs.empty? %>
+  <ul>
+  <% @playlist.songs.each do |song| %>
+    <li><%= link_to song.title, song_path(song) %></li>
+  <% end %>
+  </ul>
+  <% else %>
+    This playlist has no songs yet.
+  <% end %>
+</p>
+
 
 <%= link_to 'Edit', edit_playlist_path(@playlist) %> |
 <%= link_to 'Back', playlists_path %>
