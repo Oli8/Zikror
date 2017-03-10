@@ -22,9 +22,9 @@
 <p>
   <h3>Songs:</h3>
   <% unless @playlist.songs.empty? %>
-  <ul>
+  <ul id="songs">
   <% @playlist.songs.each do |song| %>
-    <li><%= link_to song.title, song_path(song) %></li>
+    <li data-url="<%= song.file.url %>"><%= link_to song.title, song_path(song) %></li>
   <% end %>
   </ul>
   <% else %>
@@ -32,6 +32,27 @@
   <% end %>
 </p>
 
+<% unless @playlist.songs.empty? %>
+	<p><%= audio_tag(@playlist.songs.first.file.url, autoplay: true, controls: true, id: 'player_zikror') %></p>
+<% end %>
+
 
 <%= link_to 'Edit', edit_playlist_path(@playlist) %> |
 <%= link_to 'Back', playlists_path %>
+
+<script type="text/javascript">
+	var songs = $('#songs li'),
+	index = 0;
+
+	function setPlayingStyle(n){
+		songs.removeClass('playing');
+		songs.eq(n).addClass('playing');
+	}
+	setPlayingStyle(index);
+
+	$('#player_zikror').on('ended', function(){
+		index = (index + 1) % songs.length;
+		this.src = songs.eq(index).data('url');
+		setPlayingStyle(index);
+	});
+</script>
