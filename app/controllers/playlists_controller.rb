@@ -1,4 +1,5 @@
 class PlaylistsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:add_song]
   before_action :require_login
   before_action :check_owner, only: [:edit, :update]
   before_action :set_playlist, only: [:show, :edit, :update, :destroy]
@@ -62,6 +63,16 @@ class PlaylistsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to playlists_url, notice: 'Playlist was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def add_song
+    pl = Playlist.find(params[:playlist_id]).playlist_songs.create(song: Song.find(params[:song_id]))
+    unless pl.valid?
+      render plain: pl.errors.full_messages.first
+    else
+      pl.save
+      render plain: 'Song has been added to the playlist'
     end
   end
 

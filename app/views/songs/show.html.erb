@@ -1,8 +1,6 @@
-<p id="notice"><%= notice %></p>
-
 <p>
-  <strong>Id user:</strong>
-  <%= @song.user_id %>
+  <strong>Owner:</strong>
+  <%= @song.user.username %>
 </p>
 
 <p>
@@ -26,13 +24,57 @@
 </p>
 
 <p>
-  <strong>Private:</strong>
-  <%= @song.private %>
+  <%= audio_tag(@song.file.url, autoplay: false, controls: true) %>
 </p>
 
 <p>
-  <%= audio_tag(@song.file.url, autoplay: false, controls: true) %>
+  <!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add to playlist...</button>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add to playlist</h4>
+      </div>
+      <div class="modal-body">
+        <p>Pick the playlist you want to add the song to:</p>
+
+        <%= form_tag("/add_song", method: "post", id: "add_song") do %>
+          <%= hidden_field_tag(:song_id, @song.id) %>
+          <%= select_tag(:playlist_id, options_for_select(current_user.playlists.collect{|p| [p.name, p.id]}))%>
+          <%= submit_tag("Add") %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 </p>
 
 <%= link_to 'Edit', edit_song_path(@song) %> |
 <%= link_to 'Back', songs_path %>
+
+<script type="text/javascript">
+  $('#add_song').submit(function(e){
+    e.preventDefault();
+    $.post('/playlists/add_song',
+    {
+      song_id: $('#song_id').val(),
+      playlist_id: $('#playlist_id').val()
+    },
+      function(data){
+        $('#myModal').modal('hide');
+        $('body').prepend($(
+          `<div class="alert alert-info alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>${data}</strong>
+          </div>`));
+    });
+  });
+</script>
