@@ -1,0 +1,34 @@
+<h1>Editing Playlist</h1>
+
+<% if @playlist.errors.any? %>
+  <div id="error_explanation">
+    <ul>
+    <% @playlist.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  <%= form_for(@playlist) do |f| %>
+
+	<%= f.label :name %>
+	<%= f.text_field :name, class: 'form-control' %>
+
+	<%= f.label :description %>
+	<%= f.text_area :description, class: 'form-control' %>
+
+	<%= f.label :image %>
+	<%= f.file_field :image, class: 'form-control' %>
+
+	<br/><br/>
+	<%= f.submit 'Update', class: 'btn btn-primary' %>
+
+  <% end %>
+  </div>
+</div>
+
+<%= link_to 'Show', @playlist %> |
+<%= link_to 'Back', playlists_path %>
