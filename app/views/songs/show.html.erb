@@ -28,6 +28,19 @@
 </p>
 
 <p>
+  <h3>Playlist with this song:</h3>
+  <% unless @song.playlists.empty? %>
+  <ul>
+  <% @song.playlists.each do |playlist| %>
+    <li><%= link_to playlist.name, playlist_path(playlist) %></li>
+  <% end %>
+  </ul>
+  <% else %>
+    This song is not in any playlist.
+  <% end %>
+</p>
+
+<p>
   <!-- Trigger the modal with a button -->
 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add to playlist...</button>
 <!-- Modal -->
