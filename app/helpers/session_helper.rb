@@ -35,4 +35,8 @@ module SessionHelper
       end
     end
 
+    def owner?(stuff)
+		stuff.user == current_user
+    end
+
 end
