@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   delete '/logout', to: 'session#destroy'
   root 'session#new'
   post '/playlists/add_song', to: 'playlists#add_song'
+  get '/playlists/remove/:song_id/:playlist_id', to: 'playlists#remove'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

@@ -76,6 +76,19 @@ class PlaylistsController < ApplicationController
     end
   end
 
+  def remove
+    song = Song.find(params[:song_id])
+    playlist = Playlist.find(params[:playlist_id])
+    if current_user == playlist.user
+      PlaylistSong.find_by(song_id: song.id, playlist_id: playlist.id).destroy
+      notice = 'Song removed'
+    else
+      notice = 'You can only remove song from playlist you own'
+    end
+    redirect_to playlist_path(playlist)
+    flash[:notice] = notice
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_playlist

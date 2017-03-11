@@ -24,7 +24,14 @@
   <% unless @playlist.songs.empty? %>
   <ul id="songs">
   <% @playlist.songs.each do |song| %>
-    <li data-url="<%= song.file.url %>"><%= link_to song.title, song_path(song) %></li>
+    <li data-url="<%= song.file.url %>">
+		<%= link_to song.title, song_path(song) %>
+		<% if owner?(@playlist) %>
+			<a href="/playlists/remove/<%= song.id %>/<%= @playlist.id %>">
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+		<% end %>
+    </li>
   <% end %>
   </ul>
   <% else %>
@@ -33,7 +40,7 @@
 </p>
 
 <% unless @playlist.songs.empty? %>
-	<p><%= audio_tag(@playlist.songs.first.file.url, autoplay: true, controls: true, id: 'player_zikror') %></p>
+	<p><%= audio_tag(@playlist.songs.first.file.url, autoplay: false, controls: true, id: 'player_zikror') %></p>
 <% end %>
 
 <% if owner?(@playlist) %>
