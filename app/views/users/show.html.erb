@@ -16,7 +16,7 @@
 	<strong><%= "#{@user.username} has not uploaded any song yet" %></strong>
 <% end %>
 
-<h2>My songs</h2>
+<h2><%= correct_user? ? "My songs" : "#{@user.username}'s songs" %></h2>
 
 <ul>
 	<% @user.songs.each do |song| %>
@@ -26,7 +26,7 @@
 	<% end %>
 </ul>
 
-<h2>My playlists</h2>
+<h2><%= correct_user? ? "My playlists" : "#{@user.username}'s playlists" %></h2>
 
 <ul>
 	<% @user.playlists.each do |playlist| %>
@@ -34,7 +34,7 @@
 	<% end %>
 </ul>
 
-<h2>My Artists</h2>
+<h2><%= correct_user? ? "My artists" : "#{@user.username}'s artists" %></h2>
 
 <ul>
 	<% @artists.each do |a| %>
