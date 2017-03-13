@@ -27,9 +27,7 @@
     <li data-url="<%= song.file.url %>">
 		<%= link_to song.title, song_path(song) %>
 		<% if owner?(@playlist) %>
-			<a href="/playlists/remove/<%= song.id %>/<%= @playlist.id %>">
-				<span class="glyphicon glyphicon-remove"></span>
-			</a>
+			<%= link_to raw('<span class="glyphicon glyphicon-remove"></span>'), { action: "remove", song_id: song.id, playlist_id: @playlist.id }, data: { confirm: "Are you sure you want to remove #{song.title} from #{@playlist.name} ?" } %>
 		<% end %>
     </li>
   <% end %>
