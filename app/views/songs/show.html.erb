@@ -70,7 +70,9 @@
 </div>
 </p>
 
-<%= link_to 'Edit', edit_song_path(@song) %> |
+<% if owner?(@song) %>
+  <%= link_to 'Edit', edit_song_path(@song) %> |
+<% end %>
 <%= link_to 'Back', songs_path %>
 
 <script type="text/javascript">
