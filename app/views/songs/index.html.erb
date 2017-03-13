@@ -4,10 +4,13 @@
   <%= label_tag(:query, 'Title or artist:') %>
   <%= search_field_tag(:query, params[:query] || '', list: 'datas') %>
   <datalist id="datas">
-    <% @datas.each do |d| %>
+    <% Song.pluck(:artist, :title).flatten.uniq.each do |d| %>
       <option value="<%= d %>">
     <% end %>
   </datalist>
+  <br/>
+  <%= select_tag(:genre, options_for_select(["Genre"] + Song.all.pluck(:genre).uniq, params[:genre]))%>
+  <br/>
   <%= submit_tag('search') %>
 <% end %>
 

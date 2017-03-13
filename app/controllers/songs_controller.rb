@@ -6,13 +6,9 @@ class SongsController < ApplicationController
   # GET /songs
   # GET /songs.json
   def index
-    @datas = Song.pluck(:artist, :title).flatten.uniq
-    unless params[:query].nil?
-      @songs =  Song.where("(title LIKE ? OR artist LIKE ?) AND private = ?", "%#{params[:query]}%", "%#{params[:query]}%", false).paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
-      flash.now[:notice] = "Nothing found for #{params[:query]}" if @songs.empty?
-    else
-      @songs = Song.where('private = ?', false).paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
-    end
+    genre = params[:genre] == 'Genre' ? '' : params[:genre]
+    @songs = Song.where("(title LIKE ? OR artist LIKE ?) AND genre LIKE ? AND private = ?", "%#{params[:query]}%", "%#{params[:query]}%", "%#{genre}%", false).paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
+    flash.now[:notice] = "Nothing found" if @songs.empty?
   end
 
   # GET /songs/1
