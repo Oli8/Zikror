@@ -12,14 +12,14 @@ class SessionController < ApplicationController
   		redirect_to user
   	else
 		@user = User.new
-  		flash.now[:notice] = 'Invalid parameters'
+  		@errorsConnect = 'Les identifiants sont incorrecte'
   		render 'new'
   	end
   end
 
   def destroy
-	log_out
-	redirect_to root_url
+  	log_out
+  	redirect_to root_url
   end
 
 end

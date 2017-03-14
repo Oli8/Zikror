@@ -17,8 +17,6 @@
 			<p><%= link_to current_user.username, user_path(current_user) %></p>
 			<p><%= button_to "Log out", logout_path, :method => "delete" %></p>
 		</div>
-	<% else %>
-		<p><%= link_to "Log in", login_path %></p>
 	<% end %>
 
 	<% if flash[:notice] %>
