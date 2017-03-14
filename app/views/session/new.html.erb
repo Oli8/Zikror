@@ -1,45 +1,49 @@
-<h1>Log in</h1>
-
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_for(:session, url: login_path) do |f| %>
-
-      <%= f.label :username %>
-      <%= f.text_field :username, class: 'form-control' %>
-
-      <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control' %>
-
-      <br/>
-      <%= f.submit "Log in", class: "btn btn-primary" %>
-    <% end %>
-
+ <div class="head-logo">
+    <%= image_tag('zikror.png') %>
   </div>
-</div>
+  <div class="content-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5 signin-form form-content">
+        <header>
+          <span class="answer">Vous avez un compte ?</span><br/>
+          Connectez-vous et profitez<br/> pleinement de vos musiques
+        </header>
+        <%= form_for(:session, class: "form-group form-horizontal", url: login_path) do |f| %>
+          <%= f.text_field :username, class: 'form-control', placeholder: "Nom d'utilisateur" %>
+          <%= f.password_field :password, class: 'form-control', placeholder: "Mot de passe" %>
+          <div class="errorConnect"><%= @errorsConnect %></div>
+          <%= f.submit "Log in", class: "btn-validation", value: "VALIDER" %>
+        <% end %>
+      </div>
+      <div class="col-md-2 col-sm-12 separate-form">
+        <span class="vertical-barre"></span>
+          <p>OU</p>
+        <span class="vertical-barre"></span>
+      </div>
+      <div class="col-md-5 col-sm-12 signup-form form-content">
+        <header>
+          <span class="answer">Pas encore de compte ?</span><br/>
+          Inscrivez-vous c'est gratuit !
+        </header>
+          <%= form_for(@user, class: "form-group form-horizontal") do |f| %>
+           <%= f.text_field :username, class: 'form-control', placeholder: "Nom d'utilisateur*" %>
+            <div class="error"><%= @user.errors[:username].first if @user.errors.any? %></div>
 
-<h1>New User</h1>
+            <%= f.email_field :mail, class: 'form-control', placeholder: "Adresse email*" %>
+            <div class="error"><%= @user.errors[:mail].first if @user.errors.any? %></div>
 
-<%= render 'shared/error_messages' %>
+            <%= f.password_field :password, class: 'form-control', placeholder: "Mot de passe*" %>
+            <div class="error"><%= @user.errors[:password].first if @user.errors.any? %></div>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@user) do |f| %>
-      <%= f.label :username %>
-      <%= f.text_field :username %>
+            <%= f.password_field :password_confirmation, class: 'form-control', placeholder: "Confirmez votre mot de passe*" %>
+            <div class="error"><%= @user.errors[:password_confirmation].first if @user.errors.any? %></div>
 
-      <%= f.label :mail %>
-      <%= f.email_field :mail %>
-
-      <%= f.label :password %>
-      <%= f.password_field :password %>
-
-      <%= f.label :password_confirmation, "Confirmation" %>
-      <%= f.password_field :password_confirmation %>
-
-      <br/><br/>
-      <%= f.submit "Create my account", class: "btn btn-primary" %>
-    <% end %>
+          <%= f.submit "Create my account", class: "btn-validation", value: "VALIDER" %>
+        <% end %>
+        
+        <span class="indication">* Tout les champs sont obligatoires</span>
+      </div>
+    </div>
   </div>
-</div>
-
-<%= link_to 'Back', users_path %>
+  </div>

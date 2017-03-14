@@ -1,3 +1,181 @@
 // Place all the styles related to the Session controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+body, html {
+  /*overflow-x: hidden;*/
+  height: 100vh;
+  width: 100%;
+}
+
+.row{
+  /*margin-left: 100px; */
+}
+
+.head-logo{
+  width: 100%;
+  height: 300px;
+  text-align: center;
+}
+
+.head-logo img{
+  width: 470px;
+  position: relative;
+  top: calc(100% - 225px);
+}
+
+.content-page{
+  height: calc(100% - 300px);
+}
+
+.form-content{
+  text-align: center;
+  padding-left: 70px;
+  padding-right: 70px;
+  margin-bottom: 70px;
+}
+
+header{ font-size: 2.3rem;}
+
+.answer{
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.signin-form{
+  margin-top: 45px;
+}
+
+form{
+	margin-top: 40px;
+}
+
+.form-group{
+  padding-top: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.form-control{
+  border: none;
+  display: block;
+  width: 100%;
+  background-color: transparent;
+  border-bottom: 1px solid #ffffff;
+  border-radius: 0px;
+  margin-top: 8px;
+}
+
+.form-content input:focus{
+  box-shadow: none;
+  border-color: #e20b42;
+}
+
+.btn-validation{
+  width: 100%;
+  height: 35px;
+  border-radius: 5px;
+  position: relative;
+  border: 3px solid #e20b42;
+  margin-top: 55px;
+  background-color: #e20b42;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  transition: 0.2s;
+}
+
+.btn-validation:hover{
+  background-color: transparent;
+}
+
+.indication{
+  float: left;
+  position: relative;
+	top: 10px;
+  font-size: 1.3rem;
+}
+
+.separate-form{
+  font-size: 4rem;
+  font-style: italic;
+  text-align: center;
+  display: inline;
+  height: 100%;
+  position: relative;
+  top: 160px;
+}
+
+.separate-form:before{
+  content: " ";
+  position: absolute;
+  top: 70px;
+  width: 3px;
+  height: 110px;
+  background-color: #ffffff;
+}
+
+.separate-form:after{
+  content: " ";
+  position: absolute;
+  width: 3px;
+  height: 110px;
+  background-color: #ffffff;
+  top: -120px;
+}
+
+.field_with_errors{
+  display: initial;
+  background-color: transparent;
+  padding: 0px;
+}
+
+.error{
+  margin: 0px;
+  text-align: left;
+  list-style-type: none;
+  padding-top: 7px;
+  color: rgb(255, 67, 80);
+}
+
+.errorConnect{
+	text-align: left;
+	position: relative;
+	top: 13px;
+  	color: rgb(255, 67, 80);
+}
+
+.separate-form{
+  font-size: 4rem;
+  font-style: italic;
+  text-align: center;
+  display: inline;
+  height: 100%;
+  position: relative;
+  top: 160px;
+}
+
+@media (max-width: 992px){
+  .row{
+    margin: 0px;
+  }
+
+  .separate-form{
+    top: -20px;
+    left: 200px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    width: 300px;
+  }
+
+  .separate-form:before{
+    transform: rotate(90deg);
+    top: -28px;
+    right: 260px;
+  }
+
+  .separate-form:after{
+    transform: rotate(90deg);
+    top: -28px;
+    left: 260px;
+  }
+}

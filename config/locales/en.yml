@@ -19,5 +19,12 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
+
 en:
   hello: "Hello world"
+
+  activerecord:
+  errors:
+    messages:
+      blank: "Champ obligatoire"
+      confirmation: "Les mots de passe ne sont pas identiques" # confirmation field, edit here
