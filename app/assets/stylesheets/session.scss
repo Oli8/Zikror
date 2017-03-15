@@ -3,12 +3,12 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 body, html {
-  /*overflow-x: hidden;*/
+  overflow: auto !important;
   height: 100vh;
   width: 100%;
 }
 
-.row{
+.row-login{
   /*margin-left: 100px; */
 }
 
@@ -24,7 +24,12 @@ body, html {
   top: calc(100% - 225px);
 }
 
-.content-page{
+.container-login{
+  width: 70%;
+  margin: auto;
+}
+
+.content-page-login{
   height: calc(100% - 300px);
 }
 

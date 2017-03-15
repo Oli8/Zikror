@@ -12,7 +12,7 @@ class SessionController < ApplicationController
   		redirect_to user
   	else
 		@user = User.new
-  		@errorsConnect = 'Les identifiants sont incorrecte'
+  		@errorsConnect = 'Les identifiants sont incorrectes'
   		render 'new'
   	end
   end
