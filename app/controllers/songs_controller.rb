@@ -65,6 +65,23 @@ class SongsController < ApplicationController
     end
   end
 
+  def favorite
+    song = Song.find(params[:song_id])
+    msg = ''
+    if song.private && song.user != current_user
+      msg = 'You can not add a private song to your favorite'
+    elsif !song.nil?
+      f = current_user.favorite_songs.create(song: song)
+      if f.valid?
+        msg = "#{song.title} added to your favorite songs"
+      else
+        FavoriteSong.find_by(user_id: current_user.id, song_id: song.id).destroy
+        msg = "#{song.title} has been withdrawn from your favorite"
+      end
+    end
+    render plain: msg
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_song

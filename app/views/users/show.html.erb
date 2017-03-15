@@ -34,6 +34,14 @@
 	<% end %>
 </ul>
 
+<h2>Favorites</h2>
+
+<ul id="favorite_songs">
+	<% @user.favorite_songs.each do |f| %>
+		<li><%= link_to f.song.title, song_path(f.song) %></li>
+	<% end %>
+</ul>
+
 <h2><%= correct_user? ? "My artists" : "#{@user.username}'s artists" %></h2>
 
 <ul>
