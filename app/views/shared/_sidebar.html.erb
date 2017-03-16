@@ -1,0 +1,38 @@
+<div class="sidebar">
+	<div class="block-logo">
+		<%= image_tag('logo-zkr.png') %>
+	</div>
+	<div class="container-list">
+		<div class="list-sidemenu-music">
+			<ul>
+				<li>
+					<span class="head-list">MES MUSIQUES</span>
+					<ul class="filter-list">
+						<li><a href="">Toutes</a></li>
+						<li><a href="">Artistes</a></li>
+						<li><a href="">Genre</a></li>
+						<li><a href="">Favorites</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+		<div class="list-sidemenu-music second-list">
+			<ul>
+				<li>
+					<span class="head-list">MES PLAYLISTS</span>
+					<ul class="filter-list">
+						<% current_user.playlists.each do |playlist| %>
+							<li class="list-playlist"><%= link_to playlist.name, playlist_path(playlist) %></li>
+						<% end %>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="add-playlist">
+	<%= image_tag('add.png') %>
+		<%= link_to image_tag('music-player.png'), new_song_path, class: "link-add-music" %>
+		<%= link_to image_tag('playlist.png'), new_playlist_path, class: "link-add-playlist" %>
+	</div>
+</div>

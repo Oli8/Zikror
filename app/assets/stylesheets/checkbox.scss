@@ -1,0 +1,51 @@
+.checkboxThree {
+	width: 120px;
+	height: 30px;
+	background: #333;
+	border-radius: 50px;
+	position: relative;
+	margin-top: 30px;
+}
+
+.checkboxThree:before {
+	content: 'Privée';
+	position: absolute;
+	top: 5px;
+	left: 13px;
+	height: 2px;
+	color: #8e8e8e;
+	font-size: 1.4rem;
+}
+
+.checkboxThree:after {
+	content: 'Public';
+	position: absolute;
+	top: 5px;
+	left: 72px;
+	height: 2px;
+	color: #ffffff;
+	font-size: 1.4rem;
+}
+
+.checkboxThree label {
+	display: block;
+	width: 52px;
+	height: 22px;
+	border-radius: 50px;
+	transition: all .5s ease;
+	cursor: pointer;
+	position: absolute;
+	top: 4px;
+	z-index: 1;
+	left: 10px;
+	background: #ffffff;
+}
+
+.checkboxThree input[type=checkbox]:checked + label {
+	left: 60px;
+	background: #e20b42;
+}
+
+input[type="checkbox"]{
+	opacity: 0;
+}

@@ -1,0 +1,42 @@
+.new_song input{
+	background: none;
+	border: none;
+	border-bottom: 1px solid #ffffff;
+	width: 100%;
+	margin-top: 23px;
+	padding: 0px 10px 10px 10px;
+}
+
+.file-upload{
+	position: absolute;
+	overflow: hidden;
+	margin: 0px;
+	border-radius: 0;
+	width: 30px;
+	line-height: 32px;
+	background-color: transparent;
+	height: 30px;
+	color: #ffffff;
+	text-transform: uppercase;
+	padding: 0;
+	z-index: 2;
+	bottom: 365px;
+	left: calc(100% - 107px);
+}
+
+.file-upload img{
+	width: 100%;
+}
+
+.upload{
+	position: relative;
+	top: -36px;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	text-transform: uppercase;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}

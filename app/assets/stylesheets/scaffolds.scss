@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "BigFont";
+  src: url("../fonts/WorkSans-ExtraBold.ttf");
+}
+
 $backgroundColor : #161616;
 
 * {
@@ -14,4 +19,8 @@ body, html {
   margin: 0;
   color: #ebebeb;
   background-color: $backgroundColor;
+}
+
+.container-global{
+  padding: 0px;
 }

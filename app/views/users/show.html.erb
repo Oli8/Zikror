@@ -1,47 +1,291 @@
-<p>
-  <strong>Username:</strong>
-  <%= @user.username %>
-</p>
 
-<p>
-  <strong>Mail:</strong>
-  <%= @user.mail %>
-</p>
-
-<p>
-  <%= gravatar @user %>
-</p>
-
-<% if @user.songs.size == 0 %>
+<!--<% if @user.songs.size == 0 %>
 	<strong><%= "#{@user.username} has not uploaded any song yet" %></strong>
 <% end %>
-
-<h2><%= correct_user? ? "My songs" : "#{@user.username}'s songs" %></h2>
-
-<ul>
-	<% @user.songs.each do |song| %>
-		<% if !song.private || correct_user? %>
-			<li><%= link_to "#{song.title} - #{song.artist}", song_path(song) %></li>
-		<% end %>
-	<% end %>
-</ul>
-
-<h2><%= correct_user? ? "My playlists" : "#{@user.username}'s playlists" %></h2>
-
-<ul>
-	<% @user.playlists.each do |playlist| %>
-		<li><%= link_to playlist.name, playlist_path(playlist) %></li>
-	<% end %>
-</ul>
-
-<h2><%= correct_user? ? "My artists" : "#{@user.username}'s artists" %></h2>
 
 <ul>
 	<% @artists.each do |a| %>
 		<li><%= "#{a[0]} - #{a[1]}" %></li>
 	<% end %>
-</ul>
+</ul> -->
+	<div class="container container-global">
+		<!-- Sidebar -->
+		<div class="row">
+			<%= render partial: "shared/sidebar" %>
 
+			<div class="page-content">
+				<div class="head">
+					<div class="audio">
+						<% if @user.songs.size > 0 %>
+						<audio id="mejs" src="<%= @user.songs.first.file.url %>" class="mejs__player">test</audio>
+						<% end %>
+					</div>
+					<h1 class="title-head"><%= correct_user? ? "PROFIL" : "PROFIL DE #{@user.username}" %></h1>
+					<div class="avatar">
+						<figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;">
+							
+						</figure>
+						<span><%= link_to current_user.username, user_path(current_user) %></span>
+					</div>
+					<form class="form-search form-search-musique">
+						<div class="form-group">
+							<input type="text" name="search-title" placeholder="Rechercher un titre">
+							<button type="submit"><%= image_tag('search.png') %></button>
+						</div>
+					</form>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+				
+				</div>
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        ...
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-primary">Save changes</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<div class="container-fluid">
+					<!-- <%= image_tag('zikror.png', class: "bg-content") %> -->
+					<div class="row">
+						<ul class="nav-profil">
+							<li class="active-list" data-content="ctn-musique"><span><%= correct_user? ? "MES MUSIQUES" : "MUSIQUES" %></span></li>
+							<!-- <li class="li-share" data-content="partage"><span>MES PARTAGES</span></li> -->
+							<li class="li-playlist" data-content="ctn-playlist"><span><%= correct_user? ? "MES PLAYLISTS" : "PLAYLISTS" %></span></li>
+							<div class="menu-profil">
+								<%= image_tag('menu-show.png', class: "show-img", style:"display:none;") %>
+								<%= image_tag('multiply.png', class: "close-img") %>
+							</div>
+						</ul>
+						<div class="col-lg-9 col-md-8 content-page">
+							<table class="table musique ctn-musique">
+								<thead>
+									<tr class="disabled-tr">
+										<th>#</th>
+										<th class="action-music"></th>
+										<th>Titre</th>
+										<th>Artiste</th>
+										<th>Genre</th>
+										<th>Durée</th>
+										<th class="last-th">Actions</th>
+									</tr>
+									<tbody>
+										<% @user.songs.each_with_index do |song, key| %>
+		
+										<tr>
+											<th><%= key + 1 %></th>
+											<th class="th-music">
+												<%= image_tag('play-button.png', class: "play-music", :data => { :music => song.file.url }) %>
+											</th>
+											
+											<th><% if !song.private || correct_user? %><%= link_to "#{song.title}", song_path(song) %><% end %></th>
+											
+											<th><% if !song.private || correct_user? %><%= "#{song.artist}" %><% end %></th>
+											<th><% if !song.private || correct_user? %><%= "#{song.genre}" %><% end %></th>
+											<th></th>
+
+											<th class="th-action">
+												<a data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a>
+												<a href="<%= song.file.url %>" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
+												<%= link_to image_tag('new-file.png'), edit_song_path(song) ,class: "action-zik" %>
+												<%= link_to image_tag('delete-button.png'), song, class: "action-zik", method: :delete, data: { confirm: 'Êtes-vous sûr de vouloir supprimer cette musique ?' } %>
+											</th>
+										</tr>		
+										<% end %>
+									<!-- each -->
+									</tbody>
+								</thead>
+							</table>
+							<table class="table partage ctn-partage" style="display:none;">
+								<thead>
+									<tr class="disabled-tr">
+										<th>#</th>
+										<th class="action-music"></th>
+										<th>Titre</th>
+										<th>Artiste</th>
+										<th>Album</th>
+										<th>Durée</th>
+										<th class="last-th">Actions</th>
+									</tr>
+									<tbody>
+										<!-- each -->
+									</tbody>
+								</thead>
+							</table>
+							<div class="table ctn-playlist" style="display:none;">
+							<% @user.playlists.each do |playlist| %>
+								<div class="divider-block-playlist" <% unless playlist.image_file_name.nil? %> style="background: rgb(65, 65, 65) url(<%= playlist.image.url %>) no-repeat 200% center / cover;" <% end %>>
+	
+									<a href="<%= playlist_path(playlist) %>">
+
+									<div class="circle" <% unless playlist.image_file_name.nil? %>style="border:none;"<% end %>>
+										<%= image_tag('search.png') %>
+									</div>
+									</a>
+									<span><%= link_to playlist.name, playlist_path(playlist) %></span><br>
+									<span class="nbr-title"><%= pluralize(playlist.songs.size, 'titre') %></span>
+								</div>
+							<% end %>
+							</div>
+						</div>
+						<div class="profil-side col-lg-3 col-md-4">
+						<%= form_tag(user_path(@user), method: 'get', class: "form-search form-search-profil") do %>
+							<div class="form-group">
+							  <%= search_field_tag(:username, params[:username] || '', name: 'username', placeholder: 'Recherche de profil') %>
+							  <button type="submit"><%= image_tag('search.png') %></button>
+						  </div>
+						<% end %>
+							<div class="center-vertical">
+								<ul class="parcourir-profil-sidebar">
+									<li class="profil-sidebar active-li-sidebar"><span>MON PROFIL</span></li>
+									<li class="parcourir-sidebar"><span>PARCOURIR</span></li>
+								</ul>
+								<div class="bloc-bottom">
+							    <ul class="list-all-profil" style="display:none;">
+								  <% @users_list.each do |user| %>
+								  	<div>
+							        <li><%= gravatar(user, 40) %></li>
+							        <li class="title-user"><%= link_to user.username, user %></li>
+							        <li><%= user.description %></li>
+							        <div class="action-sidebar-profil">
+							        <% if current_user == user %>
+							          <li><%= link_to 'Edit', edit_user_path(user) %></li>
+							        <% end %>
+							        <% if current_user.admin %>
+							          <li><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+							        <% end %>
+							        </div>
+							       </div>
+							    <% end %>
+							    </ul>
+							    <div class="my-profil-sidebar">
+										<div class="avatar-profil" style="background: url(<%= gravatar_src(@user) %>); background-size: cover">
+										</div>
+										<span class="username"><%= @user.username %></span>
+										<p class="description-profil"><%= @user.description %></p>
+										<div class="bloc-pop">
+											<span tabindex="0" class="glyphicon glyphicon-option-horizontal" data-trigger="focus" data-toggle="popover" data-content="Email : <%= @user.mail %>"></span>
+											<div class="info-user-pop popover">
+												<span>Email : <%= @user.mail %></span>
+												<span>Inscrit le : <%= @user.created_at.strftime("%d-%m-%Y") %></span>
+												<span>Musiques : <%= @user.songs.size %></span>
+											</div>
+										</div>
+										<div class="button">
+											<%= link_to 'PARAMETRES', edit_user_path(current_user) %>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="deconnect-profil">
+								<%= image_tag('logout.png') %>
+								<span class="span-deconnect"><%= link_to "Deconnexion", logout_path, :method => "delete" %></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+$(document).ready(function(){
+		if(localStorage.getItem('hide') === 'true'){
+	    	menuToggle();
+		}
+
+		$('.menu-profil').click(function(){
+	    	localStorage.setItem('hide', true);
+	    	menuToggle();
+		});
+
+		var contentTable = $('.active-list').attr('data-content');
+
+		$('.nav-profil li').click(function(){
+			$('.nav-profil li').removeClass('active-list');
+			var contentTable = $(this).attr('data-content');
+			$('.table').hide();
+
+			$(this).addClass('active-list');
+			$('.'+contentTable).css('display','inline-table');
+		});
+
+		$(document).on('click','.play-music', function(){
+	  	$('.th-music img').attr('src','/assets/play-button.png');
+
+			$(this).attr('src','/assets/pause-button.png');
+			$(this).parent().parent().addClass('active-music').siblings().removeClass('active-music');
+			$(this).removeClass('play-music').addClass('pause-music');
+			var audio_src = $(this).attr('data-music');
+			$('audio').each(function(){ 
+				if($(this).attr('src') !== audio_src){
+					$(this).attr('src', audio_src);
+				}	
+				this.player.getCurrentTime();
+	     	this.player.play();
+	  	});
+		});
+
+		//play option 2
+		$(document).on('click', '.mejs__play button', function(){
+			$('.active-music .pause-music').attr('src','/assets/pause-button.png');
+		});
+
+		$(document).on('click', '.mejs__pause button', function(){
+			$('.active-music .pause-music').attr('src','/assets/play-button.png');
+		});
+		
+		//pause button
+		$(document).on('click','.pause-music', function(){
+	  	$('.th-music img').attr('src','/assets/play-button.png');
+	  	
+			$(this).attr('src','/assets/play-button.png');
+			$(this).removeClass('pause-music').addClass('play-music');
+			var audio_src = $(this).attr('data-music');
+			$('audio').each(function(){ 
+	      this.player.pause();
+	  	});
+		});
+
+		$('.content-page').perfectScrollbar(); 
+		$('.profil-side').perfectScrollbar(); 
+		$('.sidebar').perfectScrollbar();
+		$('.bloc-bottom').perfectScrollbar();
+
+		
+		$(document).on('click', '.parcourir-sidebar', function(){
+			$('.my-profil-sidebar').css('display','none');
+			$('.list-all-profil').css('display','block');
+
+			$('.parcourir-sidebar').addClass('active-li-sidebar');
+			$('.profil-sidebar').removeClass('active-li-sidebar');
+		});
+
+		$(document).on('click', '.profil-sidebar', function(){
+			$('.my-profil-sidebar').css('display','block');
+			$('.list-all-profil').css('display','none');
+			$('.bloc-bottom').scrollTop(0);
+			$('.bloc-bottom').perfectScrollbar('update');
+
+			$('.parcourir-sidebar').removeClass('active-li-sidebar');
+			$('.profil-sidebar').addClass('active-li-sidebar');
+		});
+});
+		function menuToggle(){
+			$('.profil-side').toggle();
+			$('.content-page').toggleClass('clicked');
+			$('.nav-profil').toggleClass('clicked');
+			$('.close-img').toggleClass('clicked');
+			$('.show-img').toggleClass('clicked');
+		}
+</script>
