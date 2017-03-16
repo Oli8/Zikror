@@ -1,0 +1,12 @@
+<%= form_tag('/songs', method: 'get', class: "form-search form-search-musique") do %>
+  <div class="form-group">
+  <%= search_field_tag(:query, params[:query] || '', list: 'datas', placeholder: 'Rechercher un titre') %>
+  <datalist id="datas">
+    <% Song.pluck(:artist, :title).flatten.uniq.each do |d| %>
+      <option value="<%= d %>">
+    <% end %>
+  </datalist>
+  <%= select_tag(:genre, options_for_select(["Genre"] + Song.all.pluck(:genre).uniq, params[:genre]))%>
+  <button type="submit"><%= image_tag('search.png') %></button>
+  </div>
+<% end %>

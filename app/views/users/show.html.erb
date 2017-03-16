@@ -17,13 +17,7 @@
 						</figure>
 						<span><%= link_to current_user.username, user_path(current_user) %></span>
 					</div>
-					<form class="form-search form-search-musique">
-						<div class="form-group">
-							<input type="text" name="search-title" placeholder="Rechercher un titre">
-							<button type="submit"><%= image_tag('search.png') %></button>
-						</div>
-					</form>
-
+					<%= render partial: 'shared/song_search' %>
 				
 				</div>
 				<!-- Modal -->
