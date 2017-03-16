@@ -37,7 +37,11 @@
 				        </button>
 				      </div>
 				      <div class="modal-body">
-				        ...
+				        <p>Pick the playlist you want to add the song to:</p>
+				        <%= form_tag("/add_song", method: "post", id: "add_song") do %>
+				          <%= select_tag(:playlist_id, options_for_select(current_user.playlists.collect{|p| [p.name, p.id]}))%>
+				          <%= submit_tag("Add") %>
+				        <% end %>
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -86,7 +90,7 @@
 											<th></th>
 
 											<th class="th-action">
-												<a data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a>
+												<a data-song="<%= song.id %>" data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a>
 												<a href="<%= song.file.url %>" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
 												<%= link_to image_tag('new-file.png'), edit_song_path(song) ,class: "action-zik" %>
 												<%= link_to image_tag('delete-button.png'), song, class: "action-zik", method: :delete, data: { confirm: 'Êtes-vous sûr de vouloir supprimer cette musique ?' } %>
@@ -278,4 +282,28 @@ $(document).ready(function(){
 			$('.close-img').toggleClass('clicked');
 			$('.show-img').toggleClass('clicked');
 		}
+
+var song_id;
+
+$("a[data-song]").click(function(){
+	song_id = $(this).data('song');
+});
+
+$('#add_song').submit(function(e){
+    e.preventDefault();
+    $.post('/playlists/add_song',
+    {
+      song_id: song_id,
+      playlist_id: $('#playlist_id').val()
+    },
+      function(data){
+		$('.modal-backdrop.fade.in').hide();
+        $('#exampleModalLong').hide();
+        $('body').prepend($(
+          `<div class="alert alert-info alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>${data}</strong>
+          </div>`));
+    });
+  });
 </script>
