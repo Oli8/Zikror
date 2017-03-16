@@ -8,6 +8,11 @@ class PlaylistsController < ApplicationController
   # GET /playlists.json
   def index
     @playlists =  Playlist.where("name LIKE ?", "%#{params[:playlist_name]}%").paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
+     unless params[:username].nil?
+      @users_list =  User.where("username LIKE ?", "%#{params[:username]}%")
+    else
+      @users_list = User.all()
+    end
   end
 
   # GET /playlists/1

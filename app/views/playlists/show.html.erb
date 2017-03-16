@@ -53,11 +53,9 @@
 			<%= image_tag('zikror.png', class: "bg-content") %>
 			<div class="row">
 				<ul class="nav-profil">
-					<li class=""><span>RETOURNER À LA PAGE D'ACCUEIL</span></li>
-					<li class=""><span><%= link_to 'PARCOURIR LES PLAYLISTS', playlists_path %>	</span></li>
-					<% if owner?(@playlist) %>
-					<%= link_to 'Edit', edit_playlist_path(@playlist) %> |
-					<% end %>
+					<li class=""><span><%= link_to 'RETOURNER SUR VOTRE PROFIL', user_path(current_user) %></span></li>
+					<li class="parcourir-list"><span><%= link_to 'PARCOURIR LES PLAYLISTS', playlists_path %>	</span></li>
+					
 					<div class="menu-profil">
 						<%= image_tag('menu-show.png', class: "show-img", style:"display:none;") %>
 						<%= image_tag('multiply.png', class: "close-img") %>
@@ -65,17 +63,19 @@
 				</ul>
 				<div class="col-lg-9 col-md-8 content-page">
 					<div class="block-info-playlist">
-						<div class="img-playlist">
-							<% unless @playlist.image_file_name.nil? %>
-							<p>
-								<%= image_tag @playlist.image.url %>
-							</p>
-							<% end %>
+						<div class="img-playlist" <% unless @playlist.image_file_name.nil? %> style="background: rgb(65, 65, 65) url(<%= @playlist.image.url %>) no-repeat 200% center / cover;" <% end %>>
+						<div class="circle" <% unless @playlist.image_file_name.nil? %>style="border:none;"<% end %>>
+										
+									</div>
 						</div>
 						<div class="text-info-playlist">
-							<h1><%= @playlist.name %></h1>
+							<h1><%= @playlist.name %>
+								<% if owner?(@playlist) %>
+									<%= link_to raw(image_tag('new-file.png')), edit_playlist_path(@playlist) %>
+								<% end %>
+							</h1>
 							<p>
-								<strong>Description:</strong>
+								<h4><strong>Description:</strong></h4>
 								<%= @playlist.description %>
 							</p>
 						</div>
@@ -94,28 +94,26 @@
 								<th class="last-th">Actions</th>
 							</tr>
 							<tbody>
-								<% @playlist.songs.each do |song| %>
+								<% @playlist.songs.each_with_index do |song, key| %>
 								<tr id="songs">
-									<th>1</th>
-									<th class="th-music">
+									<td><%= key + 1 %></td>
+									<td class="th-music">
 										<%= image_tag('play-button.png', class: "play-music", :data => { :url => "test" }) %>
-									</th>
-									<th data-url="<%= song.file.url %>">
+									</td>
+									<td data-url="<%= song.file.url %>">
 										<%= link_to song.title, song_path(song) %>
-									</th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th class="th-action">
+									</td>
+									<td><%= song.artist %></td>
+									<td><%= song.genre %></td>
+									<td><%= song.year %></td>
+									<td class="th-action">
 										<!-- <a data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a> -->
-										<a href="" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
-										<a href="edit-music.html" class="action-zik"><%= image_tag('new-file.png') %></a>
+										<a href="<%= song.file.url %>" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
+										<%= link_to image_tag('new-file.png'), edit_song_path(song) ,class: "action-zik" %>
 										<% if owner?(@playlist) %>
-										<%= link_to raw('<span class="glyphicon glyphicon-remove"></span>'), { action: "remove", song_id: song.id, playlist_id: @playlist.id }, data: { confirm: "Êtes-vous certain de vouloir supprimer #{song.title} de cette playlist ?" } %>
+										<%= link_to raw(image_tag('delete-button.png')), { action: "remove", song_id: song.id, playlist_id: @playlist.id }, class: "action-zik", data: { confirm: "Êtes-vous certain de vouloir supprimer #{song.title} de cette playlist ?" } %>
 										<% end %>
-										<a href="" class="action-zik"><%= image_tag('delete-button.png') %></a>
-									</th>
+									</td>
 								</tr>		
 								<% end %>
 								
@@ -136,6 +134,10 @@
 						</div>
 					</form>
 					<div class="center-vertical">
+						<ul class="parcourir-profil-sidebar">
+							<li class="profil-sidebar active-li-sidebar"><span>MON PROFIL</span></li>
+							<li class="parcourir-sidebar"><span>PARCOURIR</span></li>
+						</ul>
 						<div class="bloc-bottom">
 							<ul class="list-all-profil" style="display:none;">
 								<% User.where("username LIKE ?", "%#{params[:username]}%").each do |user| %>
@@ -155,7 +157,7 @@
 								<% end %>
 							</ul>
 							<div class="my-profil-sidebar">
-								<div class="avatar-profil" style="background: url(<%= gravatar_src(current_user) %>); background-size: cover">
+								<div class="avatar-profil" style="background: url(<%= gravatar_src(@playlist.user) %>); background-size: cover">
 								</div>
 								<span class="username"><%= @playlist.user.username %></span>
 								<p class="description-profil"><%= @playlist.user.description %></p>
@@ -173,12 +175,17 @@
 							</div>
 						</div>
 					</div>
+					<div class="deconnect-profil">
+						<%= image_tag('logout.png') %>
+						<span class="span-deconnect"><%= link_to "Deconnexion", logout_path, :method => "delete" %></span>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 </div>
+<%= render partial: "shared/script" %>
 <script type="text/javascript">
 	var songs = $('#songs li'),
 	index = 0;

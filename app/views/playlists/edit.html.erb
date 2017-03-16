@@ -34,7 +34,7 @@
           <%= form_for(@playlist) do |f| %>
             <%= f.text_field :name, placeholder: 'Ajouter un titre*' %>
             <%= f.text_area :description, placeholder: 'Ajouter une description' %>
-            <input type="text" name="" disabled="disabled" id="value-file" class="input-text file" placeholder="Ajouter une pièce jointe">
+            <input type="text" name="" disabled="disabled" id="value-file" class="input-text file" placeholder="Ajouter une image à votre playlist">
             <div class="file-upload">
               <%= image_tag('upload.png') %>
               <%= f.file_field :image, class: 'upload' %>
