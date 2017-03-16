@@ -11,54 +11,21 @@
 	<div class="container container-global">
 		<!-- Sidebar -->
 		<div class="row">
-			<div class="sidebar">
-				<div class="block-logo">
-					<%= image_tag('logo-zkr.png') %>
-				</div>
-				<div class="container-list">
-					<div class="list-sidemenu-music">
-						<ul>
-							<li>
-								<span class="head-list">MES MUSIQUES</span>
-								<ul class="filter-list">
-									<li><a href="">Toutes</a></li>
-									<li><a href="">Artistes</a></li>
-									<li><a href="">Genre</a></li>
-									<li><a href="">Favorites</a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-
-					<div class="list-sidemenu-music second-list">
-						<ul>
-							<li>
-								<span class="head-list">MES PLAYLISTS</span>
-								<ul class="filter-list">
-									<li><a href=""></a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div class="add-playlist">
-				<%= image_tag('add.png') %>
-					<a href="add-music.html" class="link-add-music">Ajouter une musique</a>
-					<a href="" class="link-add-playlist">Ajouter une playlist</a>
-				</div>
-			</div>
+			<%= render partial: "shared/sidebar" %>
 
 			<div class="page-content">
 				<div class="head">
 					<div class="audio">
+						<% if @user.songs.size > 0 %>
 						<audio id="mejs" src="<%= @user.songs.first.file.url %>" class="mejs__player">test</audio>
+						<% end %>
 					</div>
 					<h1 class="title-head"><%= correct_user? ? "PROFIL" : "PROFIL DE #{@user.username}" %></h1>
 					<div class="avatar">
-						<figure style="background-image: url(<%= gravatar_src(@user) %>); background-size: cover;">
+						<figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;">
 							
 						</figure>
-						<span><%= @user.username %></span>
+						<span><%= link_to current_user.username, user_path(current_user) %></span>
 					</div>
 					<form class="form-search form-search-musique">
 						<div class="form-group">
@@ -67,7 +34,7 @@
 						</div>
 					</form>
 
-					
+				
 				</div>
 				<!-- Modal -->
 				<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -114,10 +81,10 @@
 										<th class="last-th">Actions</th>
 									</tr>
 									<tbody>
-										<% @user.songs.each do |song| %>
+										<% @user.songs.each_with_index do |song, key| %>
 		
 										<tr>
-											<th>1</th>
+											<th><%= key + 1 %></th>
 											<th class="th-music">
 												<%= image_tag('play-button.png', class: "play-music", :data => { :music => song.file.url }) %>
 											</th>
@@ -173,28 +140,57 @@
 							</div>
 						</div>
 						<div class="profil-side col-lg-3 col-md-4">
-							<form class="form-search form-search-profil">
-								<div class="form-group">
-									<input type="text" name="search-title" placeholder="Rechercher un profil">
-									<button type="submit"><%= image_tag('search.png') %></button>
-								</div>
-							</form>
+						<%= form_tag(user_path(@user), method: 'get', class: "form-search form-search-profil") do %>
+							<div class="form-group">
+							  <%= search_field_tag(:username, params[:username] || '', name: 'username', placeholder: 'Recherche de profil') %>
+							  <button type="submit"><%= image_tag('search.png') %></button>
+						  </div>
+						<% end %>
 							<div class="center-vertical">
+								<ul class="parcourir-profil-sidebar">
+									<li class="profil-sidebar active-li-sidebar"><span>MON PROFIL</span></li>
+									<li class="parcourir-sidebar"><span>PARCOURIR</span></li>
+								</ul>
 								<div class="bloc-bottom">
-									<div class="avatar-profil" style="background: url(<%= gravatar_src(current_user) %>); background-size: cover">
-									</div>
-									<span class="username"><%= current_user.username %></span>
-									<span>Email : <%= current_user.mail %></span>
-									<span>Inscrit le : <%= current_user.created_at.strftime("%d-%m-%Y") %></span>
-									<span>Musiques : <%= current_user.songs.size %></span>
-									<div class="button">
-										<%= link_to 'PARAMETRES', edit_user_path(current_user) %>
-									</div>
-									<div class=""> <!-- right-btn-head-menu -->
-										<!-- <%= image_tag('logout.png') %> -->
-									<%= button_to "Deconnexion", logout_path, :method => "delete" %>
+							    <ul class="list-all-profil" style="display:none;">
+								  <% @users_list.each do |user| %>
+								  	<div>
+							        <li><%= gravatar(user, 40) %></li>
+							        <li class="title-user"><%= link_to user.username, user %></li>
+							        <li><%= user.description %></li>
+							        <div class="action-sidebar-profil">
+							        <% if current_user == user %>
+							          <li><%= link_to 'Edit', edit_user_path(user) %></li>
+							        <% end %>
+							        <% if current_user.admin %>
+							          <li><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+							        <% end %>
+							        </div>
+							       </div>
+							    <% end %>
+							    </ul>
+							    <div class="my-profil-sidebar">
+										<div class="avatar-profil" style="background: url(<%= gravatar_src(@user) %>); background-size: cover">
+										</div>
+										<span class="username"><%= @user.username %></span>
+										<p class="description-profil"><%= @user.description %></p>
+										<div class="bloc-pop">
+											<span tabindex="0" class="glyphicon glyphicon-option-horizontal" data-trigger="focus" data-toggle="popover" data-content="Email : <%= @user.mail %>"></span>
+											<div class="info-user-pop popover">
+												<span>Email : <%= @user.mail %></span>
+												<span>Inscrit le : <%= @user.created_at.strftime("%d-%m-%Y") %></span>
+												<span>Musiques : <%= @user.songs.size %></span>
+											</div>
+										</div>
+										<div class="button">
+											<%= link_to 'PARAMETRES', edit_user_path(current_user) %>
+										</div>
 									</div>
 								</div>
+							</div>
+							<div class="deconnect-profil">
+								<%= image_tag('logout.png') %>
+								<span class="span-deconnect"><%= link_to "Deconnexion", logout_path, :method => "delete" %></span>
 							</div>
 						</div>
 					</div>
@@ -203,6 +199,7 @@
 		</div>
 	</div>
 <script type="text/javascript">
+$(document).ready(function(){
 		if(localStorage.getItem('hide') === 'true'){
 	    	menuToggle();
 		}
@@ -263,7 +260,27 @@
 		$('.content-page').perfectScrollbar(); 
 		$('.profil-side').perfectScrollbar(); 
 		$('.sidebar').perfectScrollbar();
+		$('.bloc-bottom').perfectScrollbar();
 
+		
+		$(document).on('click', '.parcourir-sidebar', function(){
+			$('.my-profil-sidebar').css('display','none');
+			$('.list-all-profil').css('display','block');
+
+			$('.parcourir-sidebar').addClass('active-li-sidebar');
+			$('.profil-sidebar').removeClass('active-li-sidebar');
+		});
+
+		$(document).on('click', '.profil-sidebar', function(){
+			$('.my-profil-sidebar').css('display','block');
+			$('.list-all-profil').css('display','none');
+			$('.bloc-bottom').scrollTop(0);
+			$('.bloc-bottom').perfectScrollbar('update');
+
+			$('.parcourir-sidebar').removeClass('active-li-sidebar');
+			$('.profil-sidebar').addClass('active-li-sidebar');
+		});
+});
 		function menuToggle(){
 			$('.profil-side').toggle();
 			$('.content-page').toggleClass('clicked');

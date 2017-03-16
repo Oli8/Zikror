@@ -1,23 +1,58 @@
-<h1>Editing User</h1>
+
 
 <%= render 'shared/error_messages' %>
 
-<div class="row">
-	<div class="col-md-6 col-md-offset-3">
-		<%= form_for(@user) do |f| %>
-			<%= f.label :username %>
-			<%= f.text_field :username %>
+<div class="container">
+		<!-- Sidebar -->
+		<div class="row row-edit">
+			<div class="page-content-edit">
+				<div class="head-edit">
+					<h1 class="title-head-admin">ADMINISTRATION</h1>
 
-			<%= f.label :mail %>
-			<%= f.email_field :mail %>
+					<div class="avatar avatar-edit">
+						<figure style="background-image: url(<%= gravatar_src(@user) %>); background-size: cover;">
+							
+						</figure>
+						<span><%= @user.username %></span>
+					</div>
+					<div class="deconnect-edit">
+						<%= image_tag('logout.png') %>
+						<span><a href="">Deconnexion</a></span>
+					</div>
+				</div>
+				<div class="container-fluid">
+					<!-- <img src="img/zikror.png" class="bg-content"> -->
+					<div class="row">
+						<div class="col-lg-6 col-md-6 content-page-edit col-md-offset-3">
+						<h3>Modifier les informations de votre compte</h3>
+						<%= form_for(@user) do |f| %>
+							<div class="bloc-upload-image" style="background: url(<%= gravatar_src(current_user) %>) no-repeat;background-size: cover;">
+							</div>
+							<%= f.text_field :username, placeholder: "Nom de l'utilisateur" %>
+							<%= f.email_field :mail, placeholder: "Adresse email de l'utilisateur" %>
+							<%= f.text_area :description, placeholder: "Ajouter une description" %>
+							<div class="bloc-password">
+								<%= f.password_field :password, placeholder: "Mot de passe*", class: "password" %>
+								<%= image_tag('hide.png', class: "notview", style: "display:none;") %>
+								<%= image_tag('eye.png', class: "view") %>
+							</div>
+							<div class="block-btn-edit">
+							<a href="<%= user_path(@user) %>"><button type="button" class="btn-cancel-account">ANNULER</button></a>
+							<%= f.button :VALIDER, value: "VALIDER" %>
+							</div>
+							<p>*Pour valider votre formulaire veuillez renseigner votre mot de passe utilisateur</p>
+						<% end %>					
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="bloc-logo">	
+				<%= image_tag('zikror.png', class: "logo-2") %>
+			</div>
+		</div>
 
-			<%= f.label :password %>
-			<%= f.password_field :password %>
-			<br/><br/>
-			<%= f.submit "Update", class: "btn btn-primary" %>
-		<% end %>
 	</div>
-</div>
+	<div class="wraper">
+	
+	</div>
 
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>

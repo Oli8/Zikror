@@ -1,0 +1,276 @@
+/* Fonts */
+@font-face {
+  font-family: "BigFont";
+  src: url("../fonts/WorkSans-ExtraBold.ttf");
+}
+/* Reset */
+*{
+	margin: 0;
+	padding: 0;
+	/*clear: both;*/
+}
+html, body{
+	height: 100%;
+}
+
+body{
+  overflow-y: auto !important;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  color: #ebebeb;
+}
+
+h1{
+	margin: 0px;
+	text-transform: uppercase;
+	color: #ffffff;
+}
+
+h3{
+	margin-bottom: 52px;
+	text-align: center;
+}
+
+li{list-style-type: none;}
+
+a{
+	text-decoration: none;
+	color: #8e8e8e;
+}
+
+a:hover{
+	text-decoration: none;
+	color: #fff;
+}
+
+.edit_user input{
+	background: none;
+	border: none;
+	border-bottom: 1px solid #ffffff;
+	width: 100%;
+	margin-top: 23px;
+	padding: 0px 10px 10px 10px;
+}
+
+/* Styles */
+.container{
+	width: 100%;
+	height:auto;
+	min-height: 100%;
+	padding: 0px;
+	background-color: #161616;
+}
+
+.row{
+	margin: 0px;	
+}
+
+.container-fluid{
+	height: 100%;
+}
+
+.page-content-edit{
+	color: #d1d1d1;
+	padding: 0px; 
+	width: 100%; 
+	padding-left: 100px;
+	padding-right: 100px;
+	height: 100%;
+}
+
+.bg-content{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 600px;
+	opacity: 0.1;
+	transform: translate(-50%, -50%);
+	z-index: 1;
+}
+
+.title-head-admin{
+	font-weight: 600;
+	font-size: 5rem;
+	position: relative;
+	top: 45px;
+	font-family: 'BigFont';
+	display: inline-block;
+}
+
+.right-btn-head-menu{
+	position: absolute;
+	right: 20px;
+}
+
+.right-btn-head-menu img{
+	width: 30px;
+	margin-right: 10px;
+	transition: 0.2s;
+}
+
+.right-btn-head-menu:hover img{
+	margin-right: 5px;
+}
+
+.content-page-edit{
+	background-color: #232323;
+	margin-top: 120px; 
+	padding-left: 65px;
+	padding-right: 65px;
+	padding-top: 60px;
+	padding-bottom: 149px;
+	height: 100vh;
+	position: relative;
+	z-index: 5;
+	height: auto;
+}
+
+.head-edit{
+	position: relative;	
+}
+
+.bloc-upload-image{
+	width: 150px;
+	height: 150px;
+	margin: auto;
+	text-align: center;
+	position: relative;
+	padding: 0px 0px 24px 0px;
+	border-radius: 100%;
+}
+
+.bloc-upload-image img{
+	width: 180px;
+	height: 180px;
+	border-radius: 100%;
+	position: relative;
+	z-index: 5;
+}
+
+/* file style */
+
+.input-text{
+	background: none;
+	border: none;
+	border-bottom: 1px solid #ffffff;
+	width: 100%;
+	margin-bottom: 20px; 
+}
+
+/* ---------- */
+.block-btn-edit{
+	margin-top: 30px;
+}
+
+.block-btn-edit button, .button-edit{
+	width: 200px;
+	border-radius: 5px;
+	padding: 5px 0px;
+	border: 2px solid #e20b42;
+	background-color: #e20b42;
+	font-size: 1.5rem;
+	font-weight: 600;
+	transition: 0.2s;
+	margin-top: 25px;
+	margin-right: 25px;
+	display: inline-block;
+}
+
+.block-btn-edit button:hover, .button-edit:hover{
+	background: transparent;
+}
+
+form p {
+	margin-bottom: 0px;
+	position: relative;
+	top: 25px;
+	font-size: 1.2rem;
+}
+
+.btn-cancel-account{
+	margin-top: 40px !important;
+	background-color: transparent !important;
+	border-color: #8e8e8e !important;
+}
+
+.btn-cancel-account:hover{
+	border-color: #ffffff !important;
+}
+
+.bloc-logo{
+	margin-top: 30px;
+	margin-bottom: 30px;
+	text-align: center;
+	width: 300px;
+	margin: auto;
+	img{
+		width: 100%;
+		padding: 30px;
+		opacity: 0.2;
+		cursor: pointer;
+		transition: 0.2s;
+	}
+}
+
+.bloc-logo img:hover{
+	opacity: 1;
+}
+
+footer{
+	height:120px;
+	bottom: 0px;
+	background-color: #232323;
+	padding-right: 100px;
+	padding-left: 100px;
+}
+
+.footer-content{
+	position: relative;
+	width: inherit;
+}
+
+.footer-content .logo-2{
+	width: 200px;
+	position: relative;
+	top: 30px;
+}
+
+.footer-content ul{
+	position: absolute;
+	right: 0px;
+}
+
+.bloc-password{
+	position: relative;
+}
+
+.bloc-password img{
+	width: 27px;
+	position: absolute;
+	bottom: 5px;
+	right: 12px;
+	cursor: pointer;
+}
+
+.avatar-edit{
+	top: 45px;
+}
+
+.deconnect-edit{
+position: absolute;
+right: 30px;
+	img{
+		width: 35px;
+	}
+}
+
+textarea{
+	margin-top: 20px;
+	color: #adcbb1;
+	background: transparent none repeat scroll 0% 0%;
+	border: 1px solid rgb(255, 255, 255);
+	width: 100%;
+	height: 93px;
+	padding: 15px;
+}

@@ -17,6 +17,11 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @artists = @user.songs.group(:artist).count.sort.reverse
+    unless params[:username].nil?
+      @users_list =  User.where("username LIKE ?", "%#{params[:username]}%")
+    else
+      @users_list = User.all()
+    end
   end
 
   # GET /users/1/edit
@@ -31,7 +36,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         log_in(@user)
-        format.html { redirect_to @user, notice: "You've successfully signed up!" }
+        format.html { redirect_to @user, notice: "Votre inscription s'est bien éffectué. Bienvenue sur Zikror !" }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render 'session/new' }
@@ -45,7 +50,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user, notice: 'Votre compte a été modifié avec succès !' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -59,7 +64,7 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to users_url, notice: 'L\'utilisateur a été supprmé avec succès' }
       format.json { head :no_content }
     end
   end
@@ -72,7 +77,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :mail, :password, :password_confirmation)
+      params.require(:user).permit(:username, :mail, :description, :password, :password_confirmation)
     end
 
 end

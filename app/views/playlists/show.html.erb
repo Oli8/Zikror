@@ -10,54 +10,19 @@
 <% end %>
 		<!-- Sidebar -->
 		<div class="row">
-			<div class="sidebar">
-				<div class="block-logo">
-					<%= image_tag('logo-zkr.png') %>
-				</div>
-				<div class="container-list">
-					<div class="list-sidemenu-music">
-						<ul>
-							<li>
-								<span class="head-list">MES MUSIQUES</span>
-								<ul class="filter-list">
-									<li><a href="">Toutes</a></li>
-									<li><a href="">Artistes</a></li>
-									<li><a href="">Genre</a></li>
-									<li><a href="">Favorites</a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-
-					<div class="list-sidemenu-music second-list">
-						<ul>
-							<li>
-								<span class="head-list">MES PLAYLISTS</span>
-								<ul class="filter-list">
-									<li><a href=""></a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div class="add-playlist">
-				<%= image_tag('add.png') %>
-					<a href="add-music.html" class="link-add-music">Ajouter une musique</a>
-					<a href="" class="link-add-playlist">Ajouter une playlist</a>
-				</div>
-			</div>
+			<%= render partial: "shared/sidebar" %>
 
 			<div class="page-content">
 				<div class="head">
 					<div class="audio">
-						<audio id="mejs" src="09 Mission In India.mp3" class="mejs__player">test</audio>
+						<audio id="mejs" src="<%= current_user.songs.first.file.url %>" class="mejs__player">test</audio>
 					</div>
-					<h1 class="title-head"><%= correct_user? ? "PROFIL" : "PROFIL DE #{@playlist.user.username}" %></h1>
+					<h1 class="title-head"><%= correct_user? ? "PROFIL" : "PROFIL DE #{current_user.username}" %></h1>
 					<div class="avatar">
-						<figure style="background-image: url(<%= gravatar_src(@playlist.user) %>); background-size: cover;">
+						<figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;">
 							
 						</figure>
-						<span><%= @playlist.user.username %></span>
+						<span><%= link_to current_user.username, user_path(current_user) %></span>
 					</div>
 					<form class="form-search form-search-musique">
 						<div class="form-group">
@@ -65,8 +30,6 @@
 							<button type="submit"><%= image_tag('search.png') %></button>
 						</div>
 					</form>
-
-					
 				</div>
 				<!-- Modal -->
 				<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -197,9 +160,6 @@
 			</div>
 		</div>
 	</div>
-
-
-
 <script type="text/javascript">
 	var songs = $('#songs li'),
 	index = 0;

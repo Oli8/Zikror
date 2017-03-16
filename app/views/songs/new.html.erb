@@ -1,14 +1,4 @@
-<h1>New Song</h1>
-
-<% if @song.errors.any? %>
-  <div id="error_explanation">
-    <ul>
-    <% @song.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
-  </div>
-<% end %>
+<!-- <h1>New Song</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
@@ -31,11 +21,61 @@
 
   	<%= f.label :private %>
   	<%= f.check_box :private %>
+
 	<br/><br/>
   	<%= f.submit 'Save', class: 'btn btn-primary' %>
+    <% end %> -->
+<div class="container">
+    <!-- Sidebar -->
+    <div class="row row-edit">
+      <div class="page-content-edit">
+        <div class="head-edit">
+          <h1 class="title-head-admin">ADMINISTRATION</h1>
 
-  <% end %>
+          <div class="avatar avatar-edit">
+            <figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;">
+              
+            </figure>
+            <span><%= current_user.username %></span>
+          </div>
+          <div class="deconnect-edit">
+            <%= image_tag('logout.png') %>
+            <span><a href="">Deconnexion</a></span>
+          </div>
+        </div>
+        <div class="container-fluid">
+          <!-- <img src="img/zikror.png" class="bg-content"> -->
+          <div class="row">
+            <div class="col-lg-6 col-md-6 content-page-edit col-md-offset-3">
+            <h3>Ajouter une musique</h3>
+            <%= form_for(@song) do |f| %>
+              <%= f.text_field :title, placeholder: "Ajouter un titre à la musique" %>
+              <%= f.text_field :artist, placeholder: "Ajouter l'artiste de cette musique" %>
+              <%= f.number_field :year, placeholder: "Ajouter l'année de cette musique" %>
+              <%= f.text_field :genre, placeholder: "Ajouter un genre de musique" %>
+              <input type="text" name="" disabled="disabled" id="value-file" class="input-text file" placeholder="Ajouter une pièce jointe">
+              <div class="file-upload">
+                <%= image_tag('upload.png') %>
+                <%= f.file_field :file, class: "upload" %>
+              </div>
+              <div class="checkboxThree">
+                <%= f.check_box :private, id: "private", class: "css-checkbox" %>
+                <label class="css-label" for="private"></label>
+              </div>
+              <div class="block-btn-edit">
+              <a href="<%= user_path(current_user) %>"><button type="button" class="btn-cancel-account">ANNULER</button></a>
+              <%= f.button :VALIDER, value: "VALIDER" %>
+              </div>
+              <p>*Pour valider votre formulaire veuillez renseigner votre mot de passe utilisateur</p>
+            <% end %>         
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bloc-logo"> 
+        <%= image_tag('zikror.png', class: "logo-2") %>
+      </div>
+    </div>
+
   </div>
-</div>
 
-<%= link_to 'Back', songs_path %>
