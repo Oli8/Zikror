@@ -1,6 +1,15 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Playlists</h1>
+
+<%= form_tag('/playlists', method: 'get') do %>
+  <%= label_tag(:playlist_name, 'Name:') %>
+  <%= search_field_tag(:playlist_name, params[:playlist_name] || '', list: 'datas') %>
+  <datalist id="datas">
+    <% Playlist.pluck(:name).each do |d| %>
+      <option value="<%= d %>">
+    <% end %>
+  </datalist>
+  <%= submit_tag('search') %>
+<% end %>
 
 <table>
   <thead>

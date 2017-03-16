@@ -21,9 +21,13 @@
           <div class="row">
             <div class="col-lg-6 col-md-6 content-page-edit col-md-offset-3">
             <h3>Ajouter une musique</h3>
+            <p>
+            </p>
             <%= form_for(@song) do |f| %>
               <%= f.text_field :title, placeholder: "Ajouter un titre à la musique" %>
+              <div class="error"><%= @song.errors[:title].first %></div>
               <%= f.text_field :artist, placeholder: "Ajouter l'artiste de cette musique" %>
+              <div class="error"><%= @song.errors[:artist].first %></div>
               <%= f.number_field :year, placeholder: "Ajouter l'année de cette musique" %>
               <%= f.text_field :genre, placeholder: "Ajouter un genre de musique" %>
               <input type="text" name="" disabled="disabled" id="value-file" class="input-text file" placeholder="Ajouter une pièce jointe">
@@ -31,6 +35,7 @@
                 <%= image_tag('upload.png') %>
                 <%= f.file_field :file, class: "upload" %>
               </div>
+              <div class="error"><%= @song.errors[:file].first %></div>
               <div class="checkboxThree">
                 <%= f.check_box :private, id: "private", class: "css-checkbox" %>
                 <label class="css-label" for="private"></label>
@@ -48,4 +53,3 @@
     </div>
 
   </div>
-
