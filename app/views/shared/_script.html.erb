@@ -129,6 +129,12 @@ $(document).ready(function(){
 					$('.th-music img').eq(index).attr('src','/assets/play-button.png');
 				}
 			});
+
+			$('.bloc-pop span').click(function(){
+				$(this).css('outline','none');
+				$('.popover').toggleClass('active-pop');
+	
+			});
 		
 
 });

@@ -58,7 +58,8 @@
               <table class="table musique ctn-musique table-profil">
                 <thead>
                   <tr class="disabled-tr">
-                    <th>#</th>
+                    <th class="index-th">#</th>
+                    <th class="favoris-th"></th>
                     <th class="action-music"></th>
                     <th>Titre</th>
                     <th>Artiste</th>
@@ -71,6 +72,11 @@
     
                     <tr>
                       <th><%= key + 1 %></th>
+                      <th><% if FavoriteSong.exists?(user_id: current_user, song_id: song.id)%>
+                        <%= link_to image_tag('like_red.png'), '#', class: "action-zik favorite", data: {:song => song.id} %>
+                        <% else %>
+                        <%= link_to image_tag('like.png'), '#', class: "action-zik favorite", data: {:song => song.id} %>
+                        <% end %></th>
                       <th class="th-music">
                         <%= image_tag('play-button.png', class: "play-music", :data => { :music => song.file.url, :index => key }) %>
                       </th>
@@ -132,17 +138,17 @@
                     <p class="description-profil"><%= current_user.description %></p>
                     <div class="bloc-pop">
                       <span tabindex="0" class="glyphicon glyphicon-option-horizontal" data-trigger="focus" data-toggle="popover" data-content="Email : <%= current_user.mail %>"></span>
-                      <div class="info-user-pop popover">
-                        <span>Email : <%= current_user.mail %></span>
-                        <span>Inscrit le : <%= current_user.created_at.strftime("%d-%m-%Y") %></span>
-                        <span>Musiques : <%= current_user.songs.size %></span>
-                      </div>
                     </div>
                     <div class="button">
                       <%= link_to 'PARAMETRES', edit_user_path(current_user) %>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="info-user-pop popover">
+                <span><b>Email</b> : <%= current_user.mail %></span>
+                <span><b>Inscrit le</b> : <%= current_user.created_at.strftime("%d-%m-%Y") %></span>
+                <span><b>Musiques</b> : <%= current_user.songs.size %></span>
               </div>
               <div class="deconnect-profil">
                 <%= image_tag('logout.png') %>
@@ -181,6 +187,19 @@ $('#add_song').submit(function(e){
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>${data}</strong>
           </div>`));
+    });
+});
+
+$('a.favorite').click(function(e){
+    e.preventDefault();
+    var song_id = $(this).data('song');
+    var that = this;
+    $.get(`/songs/favorite/${song_id}`, function(data){
+    var img = $(that).children().first();
+    if(img.attr('src').indexOf('red') !== -1)
+      img.attr('src', '/assets/like.png');
+    else
+      img.attr('src', '/assets/like_red.png');
     });
   });
 </script>

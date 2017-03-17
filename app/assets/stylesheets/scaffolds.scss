@@ -24,3 +24,26 @@ body, html {
 .container-global{
   padding: 0px;
 }
+
+.index-th{
+  width: 50px;
+}
+
+.favoris-th{
+  width: 50px;
+}
+
+.info-user-pop{
+  top: 64%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgb(25, 25, 25);
+  border-radius: 0px;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.active-pop{
+  display: block;
+  
+}
