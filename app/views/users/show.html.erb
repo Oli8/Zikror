@@ -312,11 +312,6 @@ $('a.favorite').click(function(e){
     var song_id = $(this).data('song');
     var that = this;
     $.get(`/songs/favorite/${song_id}`, function(data){
-      $('html').prepend($(
-          `<div class="alert alert-info alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>${data}</strong>
-          </div>`));
 		var img = $(that).children().first();
 		if(img.attr('src').indexOf('red') !== -1)
 			img.attr('src', '/assets/like.png');
