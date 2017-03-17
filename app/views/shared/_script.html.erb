@@ -1,11 +1,15 @@
 <script type="text/javascript">
 $(document).ready(function(){
+
 		if(localStorage.getItem('hide') === 'true'){
 	    	menuToggle();
 		}
 
 		$('.menu-profil').click(function(){
-	    	localStorage.setItem('hide', true);
+			if(localStorage.getItem('hide') == 'true')
+	    		localStorage.setItem('hide', false);
+	    	else
+	    		localStorage.setItem('hide', true);
 	    	menuToggle();
 		});
 
@@ -66,8 +70,26 @@ $(document).ready(function(){
 		$('.profil-side').perfectScrollbar(); 
 		$('.sidebar').perfectScrollbar();
 		$('.bloc-bottom').perfectScrollbar();
+
+		if(localStorage.getItem('rightSidebarView') !== 'parcourir'){
+			$('.my-profil-sidebar').css('display','block');
+			$('.list-all-profil').css('display','none');
+			$('.bloc-bottom').scrollTop(0);
+			$('.bloc-bottom').perfectScrollbar('update');
+
+			$('.parcourir-sidebar').removeClass('active-li-sidebar');
+			$('.profil-sidebar').addClass('active-li-sidebar');
+		} else {
+			$('.my-profil-sidebar').css('display','none');
+			$('.list-all-profil').css('display','block');
+
+			$('.parcourir-sidebar').addClass('active-li-sidebar');
+			$('.profil-sidebar').removeClass('active-li-sidebar');
+		}
+		
 		
 		$(document).on('click', '.parcourir-sidebar', function(){
+			localStorage.setItem('rightSidebarView', 'parcourir');
 			$('.my-profil-sidebar').css('display','none');
 			$('.list-all-profil').css('display','block');
 
@@ -76,6 +98,7 @@ $(document).ready(function(){
 		});
 
 		$(document).on('click', '.profil-sidebar', function(){
+			localStorage.setItem('rightSidebarView', 'mon-profil');
 			$('.my-profil-sidebar').css('display','block');
 			$('.list-all-profil').css('display','none');
 			$('.bloc-bottom').scrollTop(0);
