@@ -69,14 +69,14 @@ class SongsController < ApplicationController
     song = Song.find(params[:song_id])
     msg = ''
     if song.private && song.user != current_user
-      msg = 'You can not add a private song to your favorite'
+      msg = 'Vous ne pouvez pas ajouter une chanson privée à vos favoris'
     elsif !song.nil?
       f = current_user.favorite_songs.create(song: song)
       if f.valid?
-        msg = "#{song.title} added to your favorite songs"
+        msg = "#{song.title} a été ajoutée à vos favoris"
       else
         FavoriteSong.find_by(user_id: current_user.id, song_id: song.id).destroy
-        msg = "#{song.title} has been withdrawn from your favorite"
+        msg = "#{song.title} a été retiré de vos favoris"
       end
     end
     render plain: msg
