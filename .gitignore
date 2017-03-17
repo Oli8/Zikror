@@ -8,8 +8,13 @@
 /.bundle
 
 # Ignore the default SQLite database.
+<<<<<<< HEAD
  /db/*.sqlite3
  /db/*.sqlite3-journal
+=======
+/db/*.sqlite3
+/db/*.sqlite3-journal
+>>>>>>> 7f57268fad307a238df3a3229a5dc43eb205cdb8
 
 # Ignore all logfiles and tempfiles.
 /log/*

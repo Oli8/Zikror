@@ -128,3 +128,46 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+
+    if(localStorage.getItem('hide') === 'true'){
+        menuToggle();
+    }
+
+    $('.menu-profil').click(function(){
+        localStorage.setItem('hide', true);
+        menuToggle();
+    });
+
+    $(document).on('click', '.parcourir-sidebar', function(){
+      $('.my-profil-sidebar').css('display','none');
+      $('.list-all-profil').css('display','block');
+
+      $('.parcourir-sidebar').addClass('active-li-sidebar');
+      $('.profil-sidebar').removeClass('active-li-sidebar');
+    });
+
+    $(document).on('click', '.profil-sidebar', function(){
+      $('.my-profil-sidebar').css('display','block');
+      $('.list-all-profil').css('display','none');
+        
+      $('.parcourir-sidebar').removeClass('active-li-sidebar');
+      $('.profil-sidebar').addClass('active-li-sidebar');
+      
+      $('.bloc-bottom').scrollTop(0);
+      $('.bloc-bottom').perfectScrollbar('update');
+    });
+
+    $('.content-page').perfectScrollbar(); 
+    $('.profil-side').perfectScrollbar(); 
+    $('.sidebar').perfectScrollbar();
+    $('.bloc-bottom').perfectScrollbar();
+
+    function menuToggle(){
+      $('.profil-side').toggle();
+      $('.content-page').toggleClass('clicked');
+      $('.nav-profil').toggleClass('clicked');
+      $('.close-img').toggleClass('clicked');
+      $('.show-img').toggleClass('clicked');
+    }
+  </script>

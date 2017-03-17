@@ -37,7 +37,11 @@
 				        </button>
 				      </div>
 				      <div class="modal-body">
-				        ...
+				        <p>Pick the playlist you want to add the song to:</p>
+				        <%= form_tag("/add_song", method: "post", id: "add_song") do %>
+				          <%= select_tag(:playlist_id, options_for_select(current_user.playlists.collect{|p| [p.name, p.id]}))%>
+				          <%= submit_tag("Add") %>
+				        <% end %>
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -59,7 +63,7 @@
 							</div>
 						</ul>
 						<div class="col-lg-9 col-md-8 content-page">
-							<table class="table musique ctn-musique">
+							<table class="table musique ctn-musique table-profil">
 								<thead>
 									<tr class="disabled-tr">
 										<th>#</th>
@@ -76,7 +80,7 @@
 										<tr>
 											<th><%= key + 1 %></th>
 											<th class="th-music">
-												<%= image_tag('play-button.png', class: "play-music", :data => { :music => song.file.url }) %>
+												<%= image_tag('play-button.png', class: "play-music", :data => { :music => song.file.url, :index => key }) %>
 											</th>
 											
 											<th><% if !song.private || correct_user? %><%= link_to "#{song.title}", song_path(song) %><% end %></th>
@@ -86,7 +90,7 @@
 											<th><%= song.year %></th>
 
 											<th class="th-action">
-												<a data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a>
+												<a data-song="<%= song.id %>" data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a>
 												<a href="<%= song.file.url %>" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
 												<%= link_to image_tag('new-file.png'), edit_song_path(song) ,class: "action-zik" %>
 												<%= link_to image_tag('delete-button.png'), song, class: "action-zik", method: :delete, data: { confirm: 'Êtes-vous sûr de vouloir supprimer cette musique ?' } %>
@@ -97,7 +101,7 @@
 									</tbody>
 								</thead>
 							</table>
-							<table class="table partage ctn-partage" style="display:none;">
+							<table class="table partage ctn-partage table-profil" style="display:none;">
 								<thead>
 									<tr class="disabled-tr">
 										<th>#</th>
@@ -113,7 +117,7 @@
 									</tbody>
 								</thead>
 							</table>
-							<div class="table ctn-playlist" style="display:none;">
+							<div class="table ctn-playlist table-profil" style="display:none;">
 							<% @user.playlists.each do |playlist| %>
 								<div class="divider-block-playlist" <% unless playlist.image_file_name.nil? %> style="background: rgb(65, 65, 65) url(<%= playlist.image.url %>) no-repeat 200% center / cover;" <% end %>>
 	
@@ -188,4 +192,34 @@
 			</div>
 		</div>
 	</div>
+
 <%= render partial: "shared/script" %>
+
+<script type="text/javascript">
+
+var song_id;
+
+$("a[data-song]").click(function(){
+	song_id = $(this).data('song');
+	$('#add_song input[type=submit]').prop('disabled', false)
+});
+
+$('#add_song').submit(function(e){
+		alert('ok')
+    e.preventDefault();
+    $.post('/playlists/add_song',
+    {
+      song_id: song_id,
+      playlist_id: $('#playlist_id').val()
+    },
+      function(data){
+		$('.modal-backdrop.fade.in').hide();
+        $('#exampleModalLong').hide();
+        $('body').prepend($(
+          `<div class="alert alert-info alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>${data}</strong>
+          </div>`));
+    });
+  });
+</script>

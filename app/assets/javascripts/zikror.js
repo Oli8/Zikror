@@ -27,11 +27,11 @@ $(document).ready(function() {
 	});
 
 	//mediaelementjs
-	$('audio').mediaelementplayer({
-    success: function (mediaElement, domObject) {
-      media = mediaElement;  
-    }
-  });
+	// $('audio').mediaelementplayer({
+ //    success: function (mediaElement, domObject) {
+ //      media = mediaElement;  
+ //    }
+  //});
 
 });
 
