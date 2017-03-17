@@ -1,0 +1,237 @@
+	<div class="container container-global">
+		<!-- Sidebar -->
+		<div class="row">
+			<%= render partial: "shared/sidebar" %>
+
+			<div class="page-content">
+				<div class="head">
+					<div class="audio">
+						<% if @user.songs.size > 0 %>
+							<audio id="mejs" src="<%= @user.songs.first.file.url %>" class="mejs__player"></audio>
+						<% end %>
+					</div>
+					<h1 class="title-head"><%= correct_user? ? "PROFIL" : "PROFIL DE #{@user.username}" %></h1>
+					<div class="avatar">
+						<figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;">
+							
+						</figure>
+						<span><%= link_to current_user.username, user_path(current_user) %></span>
+					</div>
+					<%= render partial: 'shared/song_search' %>
+				
+				</div>
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        <p>Pick the playlist you want to add the song to:</p>
+				        <%= form_tag("/add_song", method: "post", id: "add_song") do %>
+				          <%= select_tag(:playlist_id, options_for_select(current_user.playlists.collect{|p| [p.name, p.id]}))%>
+				          <%= submit_tag("Add") %>
+				        <% end %>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-primary">Save changes</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<div class="container-fluid">
+					<!-- <%= image_tag('zikror.png', class: "bg-content") %> -->
+					<div class="row">
+						<ul class="nav-profil">
+							<li class="active-list" data-content="ctn-musique"><span><%= correct_user? ? "MES MUSIQUES" : "MUSIQUES" %></span></li>
+							<!-- <li class="li-share" data-content="partage"><span>MES PARTAGES</span></li> -->
+							<li class="li-playlist" data-content="ctn-playlist"><span><%= correct_user? ? "MES PLAYLISTS" : "PLAYLISTS" %></span></li>
+							<div class="menu-profil">
+								<%= image_tag('menu-show.png', class: "show-img", style:"display:none;") %>
+								<%= image_tag('multiply.png', class: "close-img") %>
+							</div>
+						</ul>
+						<div class="col-lg-9 col-md-8 content-page">
+							<table class="table musique ctn-musique table-profil">
+								<thead>
+									<tr class="disabled-tr">
+										<th>#</th>
+										<th class="action-music"></th>
+										<th>Titre</th>
+										<th>Artiste</th>
+										<th>Genre</th>
+										<th>Année</th>
+										<th class="last-th">Actions</th>
+									</tr>
+									<tbody>
+										<% @user.favorite_songs.map{|s| s.song}.each_with_index do |song, key| %>
+		
+										<tr>
+											<th><%= key + 1 %></th>
+											<th class="th-music">
+												<%= image_tag('play-button.png', class: "play-music", :data => { :music => song.file.url, :index => key }) %>
+											</th>
+											
+											<th><% if !song.private || correct_user? %><%= link_to "#{song.title}", song_path(song) %><% end %></th>
+											
+											<th><% if !song.private || correct_user? %><%= "#{song.artist}" %><% end %></th>
+											<th><% if !song.private || correct_user? %><%= "#{song.genre}" %><% end %></th>
+											<th><%= song.year %></th>
+
+											<th class="th-action">
+												<a data-song="<%= song.id %>" data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a>
+												<a href="<%= song.file.url %>" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
+												<% if FavoriteSong.exists?(user_id: current_user, song_id: song.id)%>
+												<%= link_to image_tag('like_red.png'), '#', class: "action-zik favorite", data: {:song => song.id} %>
+												<% else %>
+												<%= link_to image_tag('like.png'), '#', class: "action-zik favorite", data: {:song => song.id} %>
+												<% end %>
+												<%= link_to image_tag('new-file.png'), edit_song_path(song) ,class: "action-zik" %>
+												<%= link_to image_tag('delete-button.png'), song, class: "action-zik", method: :delete, data: { confirm: 'Êtes-vous sûr de vouloir supprimer cette musique ?' } %>
+											</th>
+										</tr>		
+										<% end %>
+									<!-- each -->
+									</tbody>
+								</thead>
+							</table>
+							<table class="table partage ctn-partage table-profil" style="display:none;">
+								<thead>
+									<tr class="disabled-tr">
+										<th>#</th>
+										<th class="action-music"></th>
+										<th>Titre</th>
+										<th>Artiste</th>
+										<th>Album</th>
+										<th>Durée</th>
+										<th class="last-th">Actions</th>
+									</tr>
+									<tbody>
+										<!-- each -->
+									</tbody>
+								</thead>
+							</table>
+							<div class="table ctn-playlist table-profil" style="display:none;">
+							<% @user.playlists.each do |playlist| %>
+								<div class="divider-block-playlist" <% unless playlist.image_file_name.nil? %> style="background: rgb(65, 65, 65) url(<%= playlist.image.url %>) no-repeat 200% center / cover;" <% end %>>
+	
+									<a href="<%= playlist_path(playlist) %>">
+
+									<div class="circle" <% unless playlist.image_file_name.nil? %>style="border:none;"<% end %>>
+										<%= image_tag('search.png') %>
+									</div>
+									</a>
+									<span><%= link_to playlist.name, playlist_path(playlist) %></span><br>
+									<span class="nbr-title"><%= pluralize(playlist.songs.size, 'titre') %></span>
+								</div>
+							<% end %>
+							</div>
+						</div>
+						<div class="profil-side col-lg-3 col-md-4">
+						<%= form_tag(user_path(@user), method: 'get', class: "form-search form-search-profil") do %>
+							<div class="form-group">
+							  <%= search_field_tag(:username, params[:username] || '', name: 'username', placeholder: 'Recherche de profil') %>
+							  <button type="submit"><%= image_tag('search.png') %></button>
+						  </div>
+						<% end %>
+							<div class="center-vertical">
+								<ul class="parcourir-profil-sidebar">
+									<li class="profil-sidebar active-li-sidebar"><span>MON PROFIL</span></li>
+									<li class="parcourir-sidebar"><span>PARCOURIR</span></li>
+								</ul>
+								<div class="bloc-bottom">
+							    <ul class="list-all-profil" style="display:none;">
+								  <% User.where("username LIKE ?", "%#{params[:username]}%").each do |user| %>
+								  	<div>
+							        <li><%= gravatar(user, 40) %></li>
+							        <li class="title-user"><%= link_to user.username, user %></li>
+							        <li><%= user.description %></li>
+							        <div class="action-sidebar-profil">
+							        <% if current_user == user %>
+							          <li><%= link_to 'Edit', edit_user_path(user) %></li>
+							        <% end %>
+							        <% if current_user.admin %>
+							          <li><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+							        <% end %>
+							        </div>
+							       </div>
+							    <% end %>
+							    </ul>
+							    <div class="my-profil-sidebar">
+										<div class="avatar-profil" style="background: url(<%= gravatar_src(@user) %>); background-size: cover">
+										</div>
+										<span class="username"><%= @user.username %></span>
+										<p class="description-profil"><%= @user.description %></p>
+										<div class="bloc-pop">
+											<span tabindex="0" class="glyphicon glyphicon-option-horizontal" data-trigger="focus" data-toggle="popover" data-content="Email : <%= @user.mail %>"></span>
+											<div class="info-user-pop popover">
+												<span>Email : <%= @user.mail %></span>
+												<span>Inscrit le : <%= @user.created_at.strftime("%d-%m-%Y") %></span>
+												<span>Musiques : <%= @user.songs.size %></span>
+											</div>
+										</div>
+										<div class="button">
+											<%= link_to 'PARAMETRES', edit_user_path(current_user) %>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="deconnect-profil">
+								<%= image_tag('logout.png') %>
+								<span class="span-deconnect"><%= link_to "Deconnexion", logout_path, :method => "delete" %></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<%= render partial: "shared/script" %>
+<script type="text/javascript">
+
+var song_id;
+
+$("a[data-song]").click(function(){
+	song_id = $(this).data('song');
+	$('#add_song input[type=submit]').prop('disabled', false)
+});
+
+$('#add_song').submit(function(e){
+		alert('ok')
+    e.preventDefault();
+    $.post('/playlists/add_song',
+    {
+      song_id: song_id,
+      playlist_id: $('#playlist_id').val()
+    },
+      function(data){
+		$('.modal-backdrop.fade.in').hide();
+        $('#exampleModalLong').hide();
+        $('body').prepend($(
+          `<div class="alert alert-info alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>${data}</strong>
+          </div>`));
+    });
+  });
+
+$('a.favorite').click(function(e){
+    e.preventDefault();
+    var song_id = $(this).data('song');
+    var that = this;
+    $.get(`/songs/favorite/${song_id}`, function(data){
+		var img = $(that).children().first();
+		if(img.attr('src').indexOf('red') !== -1)
+			img.attr('src', '/assets/like.png');
+		else
+			img.attr('src', '/assets/like_red.png');
+    });
+  });
+
+</script>

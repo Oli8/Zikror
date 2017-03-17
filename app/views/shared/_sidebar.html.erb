@@ -9,9 +9,9 @@
 					<span class="head-list">MES MUSIQUES</span>
 					<ul class="filter-list">
 						<li><a href="">Toutes</a></li>
-						<li><a href="">Artistes</a></li>
-						<li><a href="">Genre</a></li>
-						<li><a href="">Favorites</a></li>
+						<!-- <li><a href="">Artistes</a></li>
+						<li><a href="">Genre</a></li> -->
+						<li><%= link_to "Favorites", "/users/#{current_user.id}/favorite" %></li>
 					</ul>
 				</li>
 			</ul>

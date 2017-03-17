@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_login, except: [:create]
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :favorite]
   before_action :is_owner, only: [:edit, :update]
 
   # GET /users
@@ -26,6 +26,9 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+  end
+
+  def favorite
   end
 
   # POST /users
