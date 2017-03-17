@@ -13,12 +13,17 @@
             </figure>
             <span><%= link_to current_user.username, user_path(current_user) %></span>
           </div>
-          <form class="form-search form-search-musique">
-            <div class="form-group">
-              <input type="text" name="search-title" placeholder="Rechercher un titre">
-              <button type="submit"><%= image_tag('search.png') %></button>
+          <%= form_tag('/playlists', method: 'get', class: "form-search form-search-musique") do %>
+          <div class="form-group">
+            <%= search_field_tag(:playlist_name, params[:playlist_name] || '', list: 'datas', placeholder: "Rechercher une playlist") %>
+            <datalist id="datas">
+              <% Playlist.pluck(:name).each do |d| %>
+                <option value="<%= d %>"></option>
+              <% end %>
+            </datalist>
+            <button type="submit"><%= image_tag('search.png') %></button>
             </div>
-          </form>
+          <% end %>
 
         
         </div>
