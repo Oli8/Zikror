@@ -25,6 +25,41 @@ body, html {
   padding: 0px;
 }
 
+.modal-content{
+  border-radius: 0px;
+}
+
+#playlist_id{
+  color: rgb(0, 0, 0);
+  
+}
+
+.modal-dialog{
+  button[type=submit]{
+    background: rgb(224, 24, 66);
+    border-color: transparent;
+    box-shadow: none;
+    color: #fff;
+    padding: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 1.3rem;
+  }
+  .btn-secondary{
+    background: none;
+  }
+}
+
+.alert-info, .alert-warning{
+  position: absolute;
+  z-index: 99;
+  width: 100%;
+  border-radius: 0px;
+  border-color: transparent;
+  color: #fff;
+  background-color: #e20b42;
+}
+
 .index-th{
   width: 50px;
 }
@@ -45,5 +80,4 @@ body, html {
 
 .active-pop{
   display: block;
-  
 }
