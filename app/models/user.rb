@@ -1,6 +1,7 @@
 class User < ApplicationRecord
 	has_many :songs, dependent: :destroy
 	has_many :playlists, dependent: :destroy
+	has_many :favorite_songs, dependent: :destroy
 
 	validates :username,
 				presence: {message: 'Veuillez saisir un nom d\'utilisateur'},

@@ -12,6 +12,13 @@
 
 ActiveRecord::Schema.define(version: 20170316102200) do
 
+  create_table "favorite_songs", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "song_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "playlist_songs", force: :cascade do |t|
     t.integer  "playlist_id"
     t.integer  "song_id"
