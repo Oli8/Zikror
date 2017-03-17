@@ -5,3 +5,65 @@
 .playing {
 	color: red;
 }
+
+.edit_playlist input{
+	background: none;
+	border: none;
+	border-bottom: 1px solid #ffffff;
+	width: 100%;
+	margin-top: 23px;
+	padding: 0px 10px 10px 10px;
+}
+
+.edit_playlist .file-upload{
+	bottom: 302px;
+}
+
+.block-info-playlist{
+	.circle{
+		width: 130px;
+		height: 130px;
+		border: 1px solid;
+		border-radius: 100%;
+		margin: auto;
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.img-playlist{
+		width: 220px;
+		height: 210px;
+		background-color: rgb(65, 65, 65);
+		display: inline-block;
+		z-index: 20;
+		margin: 10px;
+		margin-right: 30px;
+	}
+	.text-info-playlist{
+		display: inline-block;
+		vertical-align: top;
+		position: relative;
+		top: 16px;
+		h4{
+			margin-bottom: 5px;
+		}
+		h1{
+			a{
+				border-right: none !important;
+				position: relative;
+				bottom: 5px;
+				img{
+					width: 25px !important;
+				}
+			}
+		}
+	}
+}
+
+.divider-block-playlist{
+	vertical-align: bottom;
+}
+
+.parcourir-list{
+	border: none !important;
+}

@@ -57,7 +57,7 @@
 							</div>
 						</ul>
 						<div class="col-lg-9 col-md-8 content-page">
-							<table class="table musique ctn-musique">
+							<table class="table musique ctn-musique table-profil">
 								<thead>
 									<tr class="disabled-tr">
 										<th>#</th>
@@ -65,7 +65,7 @@
 										<th>Titre</th>
 										<th>Artiste</th>
 										<th>Genre</th>
-										<th>Durée</th>
+										<th>Année</th>
 										<th class="last-th">Actions</th>
 									</tr>
 									<tbody>
@@ -74,14 +74,14 @@
 										<tr>
 											<th><%= key + 1 %></th>
 											<th class="th-music">
-												<%= image_tag('play-button.png', class: "play-music", :data => { :music => song.file.url }) %>
+												<%= image_tag('play-button.png', class: "play-music", :data => { :music => song.file.url, :index => key }) %>
 											</th>
 											
 											<th><% if !song.private || correct_user? %><%= link_to "#{song.title}", song_path(song) %><% end %></th>
 											
 											<th><% if !song.private || correct_user? %><%= "#{song.artist}" %><% end %></th>
 											<th><% if !song.private || correct_user? %><%= "#{song.genre}" %><% end %></th>
-											<th></th>
+											<th><%= song.year %></th>
 
 											<th class="th-action">
 												<a data-song="<%= song.id %>" data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a>
@@ -100,7 +100,7 @@
 									</tbody>
 								</thead>
 							</table>
-							<table class="table partage ctn-partage" style="display:none;">
+							<table class="table partage ctn-partage table-profil" style="display:none;">
 								<thead>
 									<tr class="disabled-tr">
 										<th>#</th>
@@ -116,7 +116,7 @@
 									</tbody>
 								</thead>
 							</table>
-							<div class="table ctn-playlist" style="display:none;">
+							<div class="table ctn-playlist table-profil" style="display:none;">
 							<% @user.playlists.each do |playlist| %>
 								<div class="divider-block-playlist" <% unless playlist.image_file_name.nil? %> style="background: rgb(65, 65, 65) url(<%= playlist.image.url %>) no-repeat 200% center / cover;" <% end %>>
 	
@@ -191,105 +191,19 @@
 			</div>
 		</div>
 	</div>
+
+<%= render partial: "shared/script" %>
 <script type="text/javascript">
-$(document).ready(function(){
-		if(localStorage.getItem('hide') === 'true'){
-	    	menuToggle();
-		}
-
-		$('.menu-profil').click(function(){
-	    	localStorage.setItem('hide', true);
-	    	menuToggle();
-		});
-
-		var contentTable = $('.active-list').attr('data-content');
-
-		$('.nav-profil li').click(function(){
-			$('.nav-profil li').removeClass('active-list');
-			var contentTable = $(this).attr('data-content');
-			$('.table').hide();
-
-			$(this).addClass('active-list');
-			$('.'+contentTable).css('display','inline-table');
-		});
-
-		$(document).on('click','.play-music', function(){
-	  	$('.th-music img').attr('src','/assets/play-button.png');
-
-
-			$(this).attr('src','/assets/pause-button.png');
-			$(this).parent().parent().addClass('active-music').siblings().removeClass('active-music');
-			$(this).removeClass('play-music').addClass('pause-music');
-			var audio_src = $(this).attr('data-music');
-			$('audio').each(function(){ 
-				if($(this).attr('src') !== audio_src){
-					$(this).attr('src', audio_src);
-				}	
-				this.player.getCurrentTime();
-	     	this.player.play();
-	  	});
-		});
-
-		//play option 2
-		$(document).on('click', '.mejs__play button', function(){
-			$('.active-music .pause-music').attr('src','/assets/pause-button.png');
-		});
-
-		$(document).on('click', '.mejs__pause button', function(){
-			$('.active-music .pause-music').attr('src','/assets/play-button.png');
-		});
-		
-		//pause button
-		$(document).on('click','.pause-music', function(){
-	  	$('.th-music img').attr('src','/assets/play-button.png');
-	  	
-			$(this).attr('src','/assets/play-button.png');
-			$(this).removeClass('pause-music').addClass('play-music');
-			var audio_src = $(this).attr('data-music');
-			$('audio').each(function(){ 
-	      this.player.pause();
-	  	});
-		});
-
-		$('.content-page').perfectScrollbar(); 
-		$('.profil-side').perfectScrollbar(); 
-		$('.sidebar').perfectScrollbar();
-		$('.bloc-bottom').perfectScrollbar();
-
-		
-		$(document).on('click', '.parcourir-sidebar', function(){
-			$('.my-profil-sidebar').css('display','none');
-			$('.list-all-profil').css('display','block');
-
-			$('.parcourir-sidebar').addClass('active-li-sidebar');
-			$('.profil-sidebar').removeClass('active-li-sidebar');
-		});
-
-		$(document).on('click', '.profil-sidebar', function(){
-			$('.my-profil-sidebar').css('display','block');
-			$('.list-all-profil').css('display','none');
-			$('.bloc-bottom').scrollTop(0);
-			$('.bloc-bottom').perfectScrollbar('update');
-
-			$('.parcourir-sidebar').removeClass('active-li-sidebar');
-			$('.profil-sidebar').addClass('active-li-sidebar');
-		});
-});
-		function menuToggle(){
-			$('.profil-side').toggle();
-			$('.content-page').toggleClass('clicked');
-			$('.nav-profil').toggleClass('clicked');
-			$('.close-img').toggleClass('clicked');
-			$('.show-img').toggleClass('clicked');
-		}
 
 var song_id;
 
 $("a[data-song]").click(function(){
 	song_id = $(this).data('song');
+	$('#add_song input[type=submit]').prop('disabled', false)
 });
 
 $('#add_song').submit(function(e){
+		alert('ok')
     e.preventDefault();
     $.post('/playlists/add_song',
     {
@@ -319,4 +233,5 @@ $('a.favorite').click(function(e){
 			img.attr('src', '/assets/like_red.png');
     });
   });
+
 </script>

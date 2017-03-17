@@ -1,178 +1,183 @@
 <div class="container container-global">
 
-<!-- <p>
-  <strong>User:</strong>
-  <%= @playlist.user.username %>
-</p>
- -->
-<% unless @playlist.songs.empty? %>
-	<p><%= audio_tag(@playlist.songs.first.file.url, autoplay: false, controls: true, id: 'player_zikror') %></p>
-<% end %>
-		<!-- Sidebar -->
-		<div class="row">
-			<%= render partial: "shared/sidebar" %>
+<!-- Sidebar -->
+<div class="row">
+	<%= render partial: "shared/sidebar" %>
 
-			<div class="page-content">
-				<div class="head">
-					<div class="audio">
-						<audio id="mejs" src="<%= current_user.songs.first.file.url %>" class="mejs__player">test</audio>
+	<div class="page-content">
+		<div class="head">
+			<div class="audio">
+				<% if @playlist.songs.size > 0 %>
+					<audio id="mejs" src="<%= @playlist.songs[0].file.url %>" class="mejs__player"></audio>
+				<% end %>
+			</div>
+			<h1 class="title-head"><%= correct_user? ? "PROFIL" : "PROFIL DE #{current_user.username}" %></h1>
+			<div class="avatar">
+				<figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;">
+					
+				</figure>
+				<span><%= link_to current_user.username, user_path(current_user) %></span>
+			</div>
+			<form class="form-search form-search-musique">
+				<div class="form-group">
+					<input type="text" name="search-title" placeholder="Rechercher un titre">
+					<button type="submit"><%= image_tag('search.png') %></button>
+				</div>
+			</form>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
-					<h1 class="title-head"><%= correct_user? ? "PROFIL" : "PROFIL DE #{current_user.username}" %></h1>
-					<div class="avatar">
-						<figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;">
-							
-						</figure>
-						<span><%= link_to current_user.username, user_path(current_user) %></span>
+					<div class="modal-body">
+						...
 					</div>
-					<form class="form-search form-search-musique">
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<%= image_tag('zikror.png', class: "bg-content") %>
+			<div class="row">
+				<ul class="nav-profil">
+					<li class=""><span><%= link_to 'RETOURNER SUR VOTRE PROFIL', user_path(current_user) %></span></li>
+					<li class="parcourir-list"><span><%= link_to 'PARCOURIR LES PLAYLISTS', playlists_path %>	</span></li>
+					
+					<div class="menu-profil">
+						<%= image_tag('menu-show.png', class: "show-img", style:"display:none;") %>
+						<%= image_tag('multiply.png', class: "close-img") %>
+					</div>
+				</ul>
+				<div class="col-lg-9 col-md-8 content-page">
+					<div class="block-info-playlist">
+						<div class="img-playlist" <% unless @playlist.image_file_name.nil? %> style="background: rgb(65, 65, 65) url(<%= @playlist.image.url %>) no-repeat 200% center / cover;" <% end %>>
+						<div class="circle" <% unless @playlist.image_file_name.nil? %>style="border:none;"<% end %>>
+										
+									</div>
+						</div>
+						<div class="text-info-playlist">
+							<h1><%= @playlist.name %>
+								<% if owner?(@playlist) %>
+									<%= link_to raw(image_tag('new-file.png')), edit_playlist_path(@playlist) %>
+								<% end %>
+							</h1>
+							<p>
+								<h4><strong>Description:</strong></h4>
+								<%= @playlist.description %>
+							</p>
+						</div>
+					</div>
+					<table class="table musique">
+						<thead>
+							<% unless @playlist.songs.empty? %>
+
+							<tr class="disabled-tr">
+								<th>#</th>
+								<th class="action-music"></th>
+								<th>Titre</th>
+								<th>Artiste</th>
+								<th>Genre</th>
+								<th>Année</th>
+								<th class="last-th">Actions</th>
+							</tr>
+							<tbody>
+								<% @playlist.songs.each_with_index do |song, key| %>
+								<tr>
+									<th><%= key + 1 %></th>
+									<th class="th-music">
+										<%= image_tag('play-button.png', class: "play-music", :data => { :music => song.file.url, :index => key }) %>
+									</th>
+									<th class="song" data-url="<%= song.file.url %>">
+										<%= link_to song.title, song_path(song) %>
+									</th>
+									<th><%= song.artist %></th>
+									<th><%= song.genre %></th>
+									<th><%= song.year %></th>
+									<th class="th-action">
+										<!-- <a data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a> -->
+										<a href="<%= song.file.url %>" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
+										<%= link_to image_tag('new-file.png'), edit_song_path(song) ,class: "action-zik" %>
+										<% if owner?(@playlist) %>
+										<%= link_to raw(image_tag('delete-button.png')), { action: "remove", song_id: song.id, playlist_id: @playlist.id }, class: "action-zik", data: { confirm: "Êtes-vous certain de vouloir supprimer #{song.title} de cette playlist ?" } %>
+										<% end %>
+									</th>
+								</tr>		
+								<% end %>
+								<!-- each -->
+							</tbody>
+							<% else %>
+							Aucune chanson n'a été ajouté à cette playlist. 
+							<% end %>
+						</thead>
+					</table>
+					
+				</div>
+				<div class="profil-side col-lg-3 col-md-4">
+					<form class="form-search form-search-profil">
 						<div class="form-group">
-							<input type="text" name="search-title" placeholder="Rechercher un titre">
+							<input type="text" name="search-title" placeholder="Rechercher un profil">
 							<button type="submit"><%= image_tag('search.png') %></button>
 						</div>
 					</form>
-				</div>
-				<!-- Modal -->
-				<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div class="modal-body">
-				        ...
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				        <button type="button" class="btn btn-primary">Save changes</button>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-				<div class="container-fluid">
-					<%= image_tag('zikror.png', class: "bg-content") %>
-					<div class="row">
-						<ul class="nav-profil">
-							<li class=""><span>RETOURNER À LA PAGE D'ACCUEIL</span></li>
-							<li class=""><span><%= link_to 'PARCOURIR LES PLAYLISTS', playlists_path %>	</span></li>
-							<% if owner?(@playlist) %>
-								<%= link_to 'Edit', edit_playlist_path(@playlist) %> |
-							<% end %>
-							<div class="menu-profil">
-								<%= image_tag('menu-show.png', class: "show-img", style:"display:none;") %>
-								<%= image_tag('multiply.png', class: "close-img") %>
-							</div>
+					<div class="center-vertical">
+						<ul class="parcourir-profil-sidebar">
+							<li class="profil-sidebar active-li-sidebar"><span>MON PROFIL</span></li>
+							<li class="parcourir-sidebar"><span>PARCOURIR</span></li>
 						</ul>
-						<div class="col-lg-9 col-md-8 content-page">
-							<div class="block-info-playlist">
-								<div class="img-playlist">
-									<% unless @playlist.image_file_name.nil? %>
-										<p>
-											<%= image_tag @playlist.image.url %>
-										</p>
-									<% end %>
-								</div>
-								<div class="text-info-playlist">
-									<h1><%= @playlist.name %></h1>
-									<p>
-									  <strong>Description:</strong>
-									  <%= @playlist.description %>
-									</p>
-								</div>
-							</div>
-							<table class="table musique">
-								<thead>
-									  <% unless @playlist.songs.empty? %>
-
-									<tr class="disabled-tr">
-										<th>#</th>
-										<th class="action-music"></th>
-										<th>Titre</th>
-										<th>Artiste</th>
-										<th>Genre</th>
-										<th>Durée</th>
-										<th class="last-th">Actions</th>
-									</tr>
-									<tbody>
-									  <% @playlist.songs.each do |song| %>
-									  <tr id="songs">
-										 	 <th>1</th>
-										 	 <th class="th-music">
-													<%= image_tag('play-button.png', class: "play-music", :data => { :url => "test" }) %>
-												</th>
-										    <th data-url="<%= song.file.url %>">
-												<%= link_to song.title, song_path(song) %>
-										    </th>
-										    <th></th>
-												<th></th>
-												<th></th>
-												<th></th>
-												<th class="th-action">
-													<!-- <a data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a> -->
-													<a href="" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
-													<a href="edit-music.html" class="action-zik"><%= image_tag('new-file.png') %></a>
-													<% if owner?(@playlist) %>
-													<%= link_to raw('<span class="glyphicon glyphicon-remove"></span>'), { action: "remove", song_id: song.id, playlist_id: @playlist.id }, data: { confirm: "Êtes-vous certain de vouloir supprimer #{song.title} de cette playlist ?" } %>
-												<% end %>
-													<a href="" class="action-zik"><%= image_tag('delete-button.png') %></a>
-												</th>
-											</tr>		
-									  <% end %>
-									  
-									<!-- each -->
-									</tbody>
-									<% else %>
-									    Aucune chanson n'a été ajouté à cette playlist. 
-									  <% end %>
-								</thead>
-							</table>
-					
-						</div>
-						<div class="profil-side col-lg-3 col-md-4">
-							<form class="form-search form-search-profil">
-								<div class="form-group">
-									<input type="text" name="search-title" placeholder="Rechercher un profil">
-									<button type="submit"><%= image_tag('search.png') %></button>
-								</div>
-							</form>
-							<div class="center-vertical">
-								<div class="bloc-bottom">
-									<div class="avatar-profil" style="background: url(<%= gravatar_src(@playlist.user) %>); background-size: cover">
+						<div class="bloc-bottom">
+							<ul class="list-all-profil" style="display:none;">
+								<% User.where("username LIKE ?", "%#{params[:username]}%").each do |user| %>
+								<div>
+									<li><%= gravatar(user, 40) %></li>
+									<li class="title-user"><%= link_to user.username, user %></li>
+									<li><%= user.description %></li>
+									<div class="action-sidebar-profil">
+										<% if current_user == user %>
+										<li><%= link_to 'Edit', edit_user_path(user) %></li>
+										<% end %>
+										<% if current_user.admin %>
+										<li><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+										<% end %>
 									</div>
-									<span class="username"><%= @playlist.user.username %></span>
-									<span>Email : <%= @playlist.user.mail %></span>
-									<span>Inscrit le : 12/12/1200</span>
-									<span>Musiques : 200</span>
-									<div class="button">
-										<%= link_to 'PARAMETRES', edit_user_path(@playlist.user) %>
+								</div>
+								<% end %>
+							</ul>
+							<div class="my-profil-sidebar">
+								<div class="avatar-profil" style="background: url(<%= gravatar_src(@playlist.user) %>); background-size: cover">
+								</div>
+								<span class="username"><%= @playlist.user.username %></span>
+								<p class="description-profil"><%= @playlist.user.description %></p>
+								<div class="bloc-pop">
+									<span tabindex="0" class="glyphicon glyphicon-option-horizontal" data-trigger="focus" data-toggle="popover" data-content="Email : <%= @playlist.user.mail %>"></span>
+									<div class="info-user-pop popover">
+										<span>Email : <%= @playlist.user.mail %></span>
+										<span>Inscrit le : <%= @playlist.user.created_at.strftime("%d-%m-%Y") %></span>
+										<span>Musiques : <%= @playlist.user.songs.size %></span>
 									</div>
-									<div class=""> <!-- right-btn-head-menu -->
-										<!-- <%= image_tag('logout.png') %> -->
-									<%= button_to "Deconnexion", logout_path, :method => "delete" %>
-									</div>
+								</div>
+								<div class="button">
+									<%= link_to 'PARAMETRES', edit_user_path(current_user) %>
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="deconnect-profil">
+						<%= image_tag('logout.png') %>
+						<span class="span-deconnect"><%= link_to "Deconnexion", logout_path, :method => "delete" %></span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-<script type="text/javascript">
-	var songs = $('#songs li'),
-	index = 0;
-
-	function setPlayingStyle(n){
-		songs.removeClass('playing');
-		songs.eq(n).addClass('playing');
-	}
-	setPlayingStyle(index);
-
-	$('#player_zikror').on('ended', function(){
-		index = (index + 1) % songs.length;
-		this.src = songs.eq(index).data('url');
-		setPlayingStyle(index);
-	});
-</script>
+</div>
+</div>
+<%= render partial: "shared/script" %>
