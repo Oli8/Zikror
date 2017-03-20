@@ -347,9 +347,9 @@ a:hover{
 	padding-right: 15px;
 }
 
-.table > thead > tr > th {border-bottom: 1px solid #232323;}
+.table > thead > tr > th, .table > thead > tr > td {border-bottom: 1px solid #232323;}
 
-tr th {border-bottom: 1px solid #232323; position: relative; z-index: 3}
+tr th, tr td {border-bottom: 1px solid #232323; position: relative; z-index: 3}
 
 .active-music{
 	background-color: #e20b42; 
