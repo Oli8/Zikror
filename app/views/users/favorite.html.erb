@@ -7,7 +7,7 @@
 				<div class="head">
 					<div class="audio">
 						<% if @user.songs.size > 0 %>
-							<audio id="mejs" src="<%= @user.songs.first.file.url %>" class="mejs__player"></audio>
+							<audio id="mejs" src="<%= @user.favorite_songs.first.song.file.url %>" class="mejs__player"></audio>
 						<% end %>
 					</div>
 					<h1 class="title-head"><%= correct_user? ? "PROFIL" : "PROFIL DE #{@user.username}" %></h1>
@@ -57,49 +57,9 @@
 							</div>
 						</ul>
 						<div class="col-lg-9 col-md-8 content-page">
-							<table class="table musique ctn-musique table-profil">
-								<thead>
-									<tr class="disabled-tr">
-										<th>#</th>
-										<th class="action-music"></th>
-										<th>Titre</th>
-										<th>Artiste</th>
-										<th>Genre</th>
-										<th>Année</th>
-										<th class="last-th">Actions</th>
-									</tr>
-									<tbody>
-										<% @user.favorite_songs.map{|s| s.song}.each_with_index do |song, key| %>
-		
-										<tr>
-											<th><%= key + 1 %></th>
-											<th class="th-music">
-												<%= image_tag('play-button.png', class: "play-music", :data => { :music => song.file.url, :index => key }) %>
-											</th>
-											
-											<th><% if !song.private || correct_user? %><%= link_to "#{song.title}", song_path(song) %><% end %></th>
-											
-											<th><% if !song.private || correct_user? %><%= "#{song.artist}" %><% end %></th>
-											<th><% if !song.private || correct_user? %><%= "#{song.genre}" %><% end %></th>
-											<th><%= song.year %></th>
-
-											<th class="th-action">
-												<a data-song="<%= song.id %>" data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a>
-												<a href="<%= song.file.url %>" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
-												<% if FavoriteSong.exists?(user_id: current_user, song_id: song.id)%>
-												<%= link_to image_tag('like_red.png'), '#', class: "action-zik favorite", data: {:song => song.id} %>
-												<% else %>
-												<%= link_to image_tag('like.png'), '#', class: "action-zik favorite", data: {:song => song.id} %>
-												<% end %>
-												<%= link_to image_tag('new-file.png'), edit_song_path(song) ,class: "action-zik" %>
-												<%= link_to image_tag('delete-button.png'), song, class: "action-zik", method: :delete, data: { confirm: 'Êtes-vous sûr de vouloir supprimer cette musique ?' } %>
-											</th>
-										</tr>		
-										<% end %>
-									<!-- each -->
-									</tbody>
-								</thead>
-							</table>
+							<% unless @user.favorite_songs.empty? %>
+								<%= render partial: "shared/songs_list", locals: {songs: @user.favorite_songs.map(&:song), playlist: false} %>
+							<% end %>
 							<table class="table partage ctn-partage table-profil" style="display:none;">
 								<thead>
 									<tr class="disabled-tr">
