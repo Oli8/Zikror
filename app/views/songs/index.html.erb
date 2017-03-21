@@ -59,58 +59,7 @@
               <% end %>
             </div>
             <div class="profil-side col-lg-3 col-md-4">
-            <%= form_tag(user_path(current_user), method: 'get', class: "form-search form-search-profil") do %>
-              <div class="form-group">
-                <%= search_field_tag(:username, params[:username] || '', name: 'username', placeholder: 'Recherche de profil') %>
-                <button type="submit"><%= image_tag('search.png') %></button>
-              </div>
-            <% end %>
-              <div class="center-vertical">
-                <ul class="parcourir-profil-sidebar">
-                  <li class="profil-sidebar active-li-sidebar"><span>MON PROFIL</span></li>
-                  <li class="parcourir-sidebar"><span>PARCOURIR</span></li>
-                </ul>
-                <div class="bloc-bottom">
-                  <ul class="list-all-profil" style="display:none;">
-                  <% User.where("username LIKE ?", "%#{params[:username]}%").each do |user| %>
-                    <div>
-                      <li><%= gravatar(user, 40) %></li>
-                      <li class="title-user"><%= link_to user.username, user %></li>
-                      <li><%= user.description %></li>
-                      <div class="action-sidebar-profil">
-                      <% if current_user == user %>
-                        <li><%= link_to 'Edit', edit_user_path(user) %></li>
-                      <% end %>
-                      <% if current_user.admin %>
-                        <li><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-                      <% end %>
-                      </div>
-                     </div>
-                  <% end %>
-                  </ul>
-                  <div class="my-profil-sidebar">
-                    <div class="avatar-profil" style="background: url(<%= gravatar_src(current_user) %>); background-size: cover">
-                    </div>
-                    <span class="username"><%= current_user.username %></span>
-                    <p class="description-profil"><%= current_user.description %></p>
-                    <div class="bloc-pop">
-                      <span tabindex="0" class="glyphicon glyphicon-option-horizontal" data-trigger="focus" data-toggle="popover" data-content="Email : <%= current_user.mail %>"></span>
-                    </div>
-                    <div class="button">
-                      <%= link_to 'PARAMETRES', edit_user_path(current_user) %>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="info-user-pop popover">
-                <span><b>Email</b> : <%= current_user.mail %></span>
-                <span><b>Inscrit le</b> : <%= current_user.created_at.strftime("%d-%m-%Y") %></span>
-                <span><b>Musiques</b> : <%= current_user.songs.size %></span>
-              </div>
-              <div class="deconnect-profil">
-                <%= image_tag('logout.png') %>
-                <span class="span-deconnect"><%= link_to "Deconnexion", logout_path, :method => "delete" %></span>
-              </div>
+              <%= render partial: "shared/right_sidebar", locals: {user: current_user} %>
             </div>
           </div>
         </div>
