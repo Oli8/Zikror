@@ -18,29 +18,6 @@
           <%= render partial: 'shared/song_search' %>
         
         </div>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-               <h4 class="modal-title" id="exampleModalLongTitle">Ajouter à une playlist</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p>Choisissez une playlist:</p>
-                <%= form_tag("/add_song", method: "post", id: "add_song") do %>
-                  <%= select_tag(:playlist_id, options_for_select(current_user.playlists.collect{|p| [p.name, p.id]}))%>
-                  <button type="submit">AJOUTER</button>
-                <% end %>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">ANNULER</button>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="container-fluid">
           <!-- <%= image_tag('zikror.png', class: "bg-content") %> -->
           <div class="row">
@@ -83,44 +60,3 @@
   </div>
 
 <%= render partial: "shared/script" %>
-
-<script type="text/javascript">
-
-var song_id;
-
-$("a[data-song]").click(function(){
-  song_id = $(this).data('song');
-  $('#add_song input[type=submit]').prop('disabled', false)
-});
-
-$('#add_song').submit(function(e){
-    e.preventDefault();
-    $.post('/playlists/add_song',
-    {
-      song_id: song_id,
-      playlist_id: $('#playlist_id').val()
-    },
-      function(data){
-    $('.modal-backdrop.fade.in').hide();
-        $('#exampleModalLong').hide();
-        $('body').prepend($(
-          `<div class="alert alert-info alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>${data}</strong>
-          </div>`));
-    });
-  });
-
-$('a.favorite').click(function(e){
-    e.preventDefault();
-    var song_id = $(this).data('song');
-    var that = this;
-    $.get(`/songs/favorite/${song_id}`, function(data){
-    var img = $(that).children().first();
-    if(img.attr('src').indexOf('red') !== -1)
-      img.attr('src', '/assets/like.png');
-    else
-      img.attr('src', '/assets/like_red.png');
-    });
-  });
-</script>
