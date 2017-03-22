@@ -6,10 +6,7 @@
         <div class="head">
           <%= render partial: "shared/player", locals: {songs: [@song]} %>
           <h1 class="title-head"><%= @song.user == current_user ? "MA MUSIQUE" : "MUSIQUE DE #{@song.user.username}" %></h1>
-          <div class="avatar">
-            <figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;"></figure>
-            <span><%= link_to current_user.username, user_path(current_user) %></span>
-          </div>
+          <%= render partial: "shared/user_badge" %>
           <%= render partial: 'shared/song_search' %>
         
         </div>
