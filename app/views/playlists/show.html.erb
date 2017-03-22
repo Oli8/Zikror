@@ -3,19 +3,12 @@
 <!-- Sidebar -->
 <div class="row">
 	<%= render partial: "shared/sidebar" %>
-
 	<div class="page-content">
 		<div class="head">
-			<div class="audio">
-				<% if @playlist.songs.size > 0 %>
-					<audio id="mejs" src="<%= @playlist.songs[0].file.url %>" class="mejs__player"></audio>
-				<% end %>
-			</div>
-			<h1 class="title-head"><%= correct_user? ? "PROFIL" : "PROFIL DE #{current_user.username}" %></h1>
+			<%= render partial: "shared/player", locals: {songs: @playlist.songs} %>
+			<h1 class="title-head"><%= @playlist.user == current_user ? "MA PLAYLIST" : "PLAYLIST DE #{@playlist.user.username}" %></h1>
 			<div class="avatar">
-				<figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;">
-					
-				</figure>
+				<figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;"></figure>
 				<span><%= link_to current_user.username, user_path(current_user) %></span>
 			</div>
 			<%= form_tag('/playlists', method: 'get', class: "form-search form-search-musique") do %>
