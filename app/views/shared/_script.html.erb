@@ -79,17 +79,6 @@ $(document).ready(function(){
 			menuToggle();
 		});
 
-		var contentTable = $('.active-list').attr('data-content');
-
-		$('.nav-profil li').click(function(){
-			$('.nav-profil li').removeClass('active-list');
-			var contentTable = $(this).attr('data-content');
-			$('.table-profil').hide();
-
-			$(this).addClass('active-list');
-			$('.'+contentTable).css('display','inline-table');
-		});
-
 		$('.content-page').perfectScrollbar(); 
 		$('.profil-side').perfectScrollbar(); 
 		$('.sidebar').perfectScrollbar();
