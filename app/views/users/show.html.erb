@@ -11,38 +11,14 @@
 				
 				</div>
 				<div class="container-fluid">
-					<!-- <%= image_tag('zikror.png', class: "bg-content") %> -->
 					<div class="row">
 						<ul class="nav-profil">
-							<li class="active-list" data-content="ctn-musique"><span><%= correct_user? ? "MES MUSIQUES" : "MUSIQUES" %></span></li>
-							<!-- <li class="li-share" data-content="partage"><span>MES PARTAGES</span></li> -->
-							<li class="li-playlist" data-content="ctn-playlist"><span><%= correct_user? ? "MES PLAYLISTS" : "PLAYLISTS" %></span></li>
 							<div class="menu-profil">
 								<%= image_tag('menu-show.png', class: "show-img", style:"display:none;") %>
 								<%= image_tag('multiply.png', class: "close-img") %>
 							</div>
 						</ul>
 						<div class="col-lg-9 col-md-8 content-page">
-							<% unless @user.songs.empty? %>
-								<%= render partial: "shared/songs_list", locals: {songs: @user.songs, playlist: false} %>
-							<% else %>
-								<%= @user.username %> n'a pas encore ajouté de musiques.
-							<% end %>
-							<div class="table ctn-playlist table-profil" style="display:none;">
-							<% @user.playlists.each do |playlist| %>
-								<div class="divider-block-playlist" <% unless playlist.image_file_name.nil? %> style="background: rgb(65, 65, 65) url(<%= playlist.image.url %>) no-repeat 200% center / cover;" <% end %>>
-	
-									<a href="<%= playlist_path(playlist) %>">
-
-									<div class="circle" <% unless playlist.image_file_name.nil? %>style="border:none;"<% end %>>
-										<%= image_tag('search.png') %>
-									</div>
-									</a>
-									<span><%= link_to playlist.name, playlist_path(playlist) %></span><br>
-									<span class="nbr-title"><%= pluralize(playlist.songs.size, 'titre') %></span>
-								</div>
-							<% end %>
-							</div>
 						</div>
 						<div class="profil-side col-lg-3 col-md-4">
 							<%= render partial: "shared/right_sidebar", locals: {user: @user} %>

@@ -1,30 +1,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
+		// player
 		$('audio').each(function(){
 			$(this).attr('src', $('.th-music img').first().data('music'));
-		});
-
-		if(localStorage.getItem('hide') === 'true'){
-	    	menuToggle();
-		}
-
-		$('.menu-profil').click(function(){
-			if(localStorage.getItem('hide') == 'true')
-	    		localStorage.setItem('hide', false);
-	    	else
-	    		localStorage.setItem('hide', true);
-	    	menuToggle();
-		});
-
-		var contentTable = $('.active-list').attr('data-content');
-
-		$('.nav-profil li').click(function(){
-			$('.nav-profil li').removeClass('active-list');
-			var contentTable = $(this).attr('data-content');
-			$('.table-profil').hide();
-
-			$(this).addClass('active-list');
-			$('.'+contentTable).css('display','inline-table');
 		});
 
 		var index = 0;
@@ -67,7 +45,50 @@ $(document).ready(function(){
 		$(document).on('click', '.mejs__pause button', function(){
 			$('.th-music img').eq(index).attr('src','/assets/play-button.png');	
 		});
-		
+
+		$('#mejs').on('ended', function(){
+			if(location.href.indexOf('playlists') !== -1){
+				$('.th-music img').eq(index).attr('src','/assets/play-button.png');
+				index = (index + 1) % $('.th-music img').length;
+				$('.th-music img').eq(index).attr('src','/assets/pause-button.png');
+				var url = $('.th-music img').eq(index).data('music');
+				$('audio').each(function(){
+				if($(this).attr('src') !== url){
+					$(this).attr('src', url);
+				}
+			    this.player.play();
+			});
+			$('.th-music img').eq(index).parent().parent().addClass('active-music').siblings().removeClass('active-music');
+			}
+			else{
+				$('.th-music img').eq(index).attr('src','/assets/play-button.png');
+			}
+		});
+
+
+		// navigation
+		if(localStorage.getItem('hide') === 'true'){
+			menuToggle();
+		}
+
+		$('.menu-profil').click(function(){
+			if(localStorage.getItem('hide') == 'true')
+				localStorage.setItem('hide', false);
+			else
+				localStorage.setItem('hide', true);
+			menuToggle();
+		});
+
+		var contentTable = $('.active-list').attr('data-content');
+
+		$('.nav-profil li').click(function(){
+			$('.nav-profil li').removeClass('active-list');
+			var contentTable = $(this).attr('data-content');
+			$('.table-profil').hide();
+
+			$(this).addClass('active-list');
+			$('.'+contentTable).css('display','inline-table');
+		});
 
 		$('.content-page').perfectScrollbar(); 
 		$('.profil-side').perfectScrollbar(); 
@@ -111,35 +132,15 @@ $(document).ready(function(){
 			$('.profil-sidebar').addClass('active-li-sidebar');
 		});
 
-		
-			$('#mejs').on('ended', function(){
-				if(location.href.indexOf('playlists') !== -1){
-					console.log(index);
-			  	$('.th-music img').eq(index).attr('src','/assets/play-button.png');
-					index = (index + 1) % $('.th-music img').length;
-			  	$('.th-music img').eq(index).attr('src','/assets/pause-button.png'); 
-					var url = $('.th-music img').eq(index).data('music');
-					$('audio').each(function(){ 
-						if($(this).attr('src') !== url){
-							$(this).attr('src', url);
-						}	
-			     		this.player.play();
-			  		});
-					$('.th-music img').eq(index).parent().parent().addClass('active-music').siblings().removeClass('active-music');
-				}
-				else{
-					$('.th-music img').eq(index).attr('src','/assets/play-button.png');
-				}
-			});
 
-			$('.bloc-pop span').click(function(){
-				$(this).css('outline','none');
-				$('.popover').toggleClass('active-pop');
-	
-			});
+		$('.bloc-pop span').click(function(){
+			$(this).css('outline','none');
+			$('.popover').toggleClass('active-pop');
+		});
 		
 
 });
+
 function menuToggle(){
 	$('.profil-side').toggle();
 	$('.content-page').toggleClass('clicked');
@@ -165,14 +166,14 @@ $('#add_song').submit(function(e){
       song_id: song_id,
       playlist_id: $('#playlist_id').val()
     },
-      function(data){
+    function(data){
 		$('.modal-backdrop.fade.in').hide();
         $('#exampleModalLong').hide();
         $('body').prepend($(
-          `<div class="alert alert-info alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>${data}</strong>
-          </div>`));
+			`<div class="alert alert-info alert-dismissable">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>${data}</strong>
+			</div>`));
     });
   });
 
