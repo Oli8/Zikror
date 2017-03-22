@@ -1,0 +1,5 @@
+<% edit ||= false %>
+<div class="avatar <%= 'avatar-edit' if edit %>">
+	<figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;"></figure>
+	<span><%= link_to current_user.username, user_path(current_user) %></span>
+</div>

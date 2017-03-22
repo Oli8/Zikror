@@ -4,13 +4,7 @@
       <div class="page-content-edit">
         <div class="head-edit">
           <h1 class="title-head-admin">ADMINISTRATION</h1>
-
-          <div class="avatar avatar-edit">
-            <figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;">
-              
-            </figure>
-            <span><%= link_to current_user.username, user_path(current_user) %></span>
-          </div>
+          <%= render partial: "shared/user_badge", locals: {edit: true} %>
           <div class="deconnect-edit">
             <%= image_tag('logout.png') %>
             <span><%= link_to "Deconnexion", logout_path, :method => "delete" %></a>

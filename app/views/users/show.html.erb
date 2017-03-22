@@ -6,10 +6,7 @@
 				<div class="head">
 					<%= render partial: "shared/player", locals: {songs: @user.songs} %>
 					<h1 class="title-head"><%= @user == current_user ? "MON PROFIL" : "PROFIL DE #{@user.username}" %></h1>
-					<div class="avatar">
-						<figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;"></figure>
-						<span><%= link_to current_user.username, user_path(current_user) %></span>
-					</div>
+					<%= render partial: "shared/user_badge" %>
 					<%= render partial: 'shared/song_search' %>
 				
 				</div>
@@ -31,22 +28,6 @@
 							<% else %>
 								<%= @user.username %> n'a pas encore ajouté de musiques.
 							<% end %>
-							<table class="table partage ctn-partage table-profil" style="display:none;">
-								<thead>
-									<tr class="disabled-tr">
-										<th>#</th>
-										<th class="action-music"></th>
-										<th>Titre</th>
-										<th>Artiste</th>
-										<th>Album</th>
-										<th>Durée</th>
-										<th class="last-th">Actions</th>
-									</tr>
-									<tbody>
-										<!-- each -->
-									</tbody>
-								</thead>
-							</table>
 							<div class="table ctn-playlist table-profil" style="display:none;">
 							<% @user.playlists.each do |playlist| %>
 								<div class="divider-block-playlist" <% unless playlist.image_file_name.nil? %> style="background: rgb(65, 65, 65) url(<%= playlist.image.url %>) no-repeat 200% center / cover;" <% end %>>
