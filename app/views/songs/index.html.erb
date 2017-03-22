@@ -2,19 +2,12 @@
     <!-- Sidebar -->
     <div class="row">
       <%= render partial: "shared/sidebar" %>
-
       <div class="page-content">
         <div class="head">
-          <div class="audio">
-            <% if @songs.size > 0 %>
-              <audio id="mejs" src="<%= @songs.first.file.url %>" class="mejs__player"></audio>
-            <% end %>
-          </div>
-          <h1 class="title-head"><%= correct_user? ? "PROFIL" : "PROFIL DE #{current_user.username}" %></h1>
+          <%= render partial: "shared/player", locals: {songs: @songs} %>
+          <h1 class="title-head">RECHERCHE DE MUSIQUE</h1>
           <div class="avatar">
-            <figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;">
-              
-            </figure>
+            <figure style="background-image: url(<%= gravatar_src(current_user) %>); background-size: cover;"></figure>
             <span><%= link_to current_user.username, user_path(current_user) %></span>
           </div>
           <%= render partial: 'shared/song_search' %>
@@ -45,44 +38,3 @@
   </div>
 
 <%= render partial: "shared/script" %>
-
-<script type="text/javascript">
-
-var song_id;
-
-$("a[data-song]").click(function(){
-  song_id = $(this).data('song');
-  $('#add_song input[type=submit]').prop('disabled', false)
-});
-
-$('#add_song').submit(function(e){
-    e.preventDefault();
-    $.post('/playlists/add_song',
-    {
-      song_id: song_id,
-      playlist_id: $('#playlist_id').val()
-    },
-      function(data){
-    $('.modal-backdrop.fade.in').hide();
-        $('#exampleModalLong').hide();
-        $('body').prepend($(
-          `<div class="alert alert-info alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>${data}</strong>
-          </div>`));
-    });
-});
-
-$('a.favorite').click(function(e){
-    e.preventDefault();
-    var song_id = $(this).data('song');
-    var that = this;
-    $.get(`/songs/favorite/${song_id}`, function(data){
-    var img = $(that).children().first();
-    if(img.attr('src').indexOf('red') !== -1)
-      img.attr('src', '/assets/like.png');
-    else
-      img.attr('src', '/assets/like_red.png');
-    });
-  });
-</script>

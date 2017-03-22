@@ -1,5 +1,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
+		$('audio').each(function(){
+			$(this).attr('src', $('.th-music img').first().data('music'));
+		});
 
 		if(localStorage.getItem('hide') === 'true'){
 	    	menuToggle();
@@ -34,7 +37,7 @@ $(document).ready(function(){
 			$(this).parent().parent().addClass('active-music').siblings().removeClass('active-music');
 			$(this).removeClass('play-music').addClass('pause-music');
 			var audio_src = $(this).attr('data-music');
-			$('audio').each(function(){ 
+			$('audio').each(function(){
 				if($(this).attr('src') !== audio_src){
 					$(this).attr('src', audio_src);
 				}	
@@ -46,10 +49,10 @@ $(document).ready(function(){
 		//pause button
 		$(document).on('click','.pause-music', function(){
 		  	$('.th-music img').attr('src','/assets/play-button.png');
-				$(this).attr('src','/assets/play-button.png');
-				$(this).removeClass('pause-music').addClass('play-music');
-				var audio_src = $(this).attr('data-music');
-				$('audio').each(function(){ 
+			$(this).attr('src','/assets/play-button.png');
+			$(this).removeClass('pause-music').addClass('play-music');
+			var audio_src = $(this).attr('data-music');
+			$('audio').each(function(){
 		     	this.player.pause();
 		  	});
 		});
@@ -120,7 +123,6 @@ $(document).ready(function(){
 						if($(this).attr('src') !== url){
 							$(this).attr('src', url);
 						}	
-						this.player.getCurrentTime();
 			     		this.player.play();
 			  		});
 					$('.th-music img').eq(index).parent().parent().addClass('active-music').siblings().removeClass('active-music');

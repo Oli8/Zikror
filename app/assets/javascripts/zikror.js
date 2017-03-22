@@ -25,14 +25,6 @@ $(document).ready(function() {
 			$("#value-file").val(filename);
 		}
 	});
-
-	//mediaelementjs
-	// $('audio').mediaelementplayer({
- //    success: function (mediaElement, domObject) {
- //      media = mediaElement;  
- //    }
-  //});
-
 });
 
 //function view passord show in top of this code
@@ -53,21 +45,3 @@ function mejsPlayNext(currentPlayer) {
         console.log('elseif '+audio_src);
     }
 }
-
-/*$('.th-music img').click(function(player){
-	var audio_src = $(this).attr('data-music');
-	alert(audio_src);
-	alert($(this).attr('class'));
-	if($(this).attr('class') == 'pause-music'){
-		$('audio').each(function(){
-			this.player.pause();
-		});
-	}
-	if ($(this).attr('class') == 'play-music'){
-		$('audio').each(function(){
-			this.player.getCurrentTime();
-			$(this).attr('src', audio_src);
-			this.player.play();
-		});
-	}
-});*/
