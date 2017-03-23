@@ -21,6 +21,10 @@ body, html {
   background-color: $backgroundColor;
 }
 
+.row {
+  overflow-y: hidden;
+}
+
 .container-global{
   padding: 0px;
 }
