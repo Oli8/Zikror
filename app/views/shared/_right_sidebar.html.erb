@@ -5,12 +5,23 @@
 </div>
 <% end %>
 <div class="center-vertical">
-	<ul class="parcourir-profil-sidebar">
-		<li class="profil-sidebar active-li-sidebar"><span>PROFIL</span></li>
-		<li class="parcourir-sidebar"><span>PARCOURIR</span></li>
+	<ul class="right-tabs nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#right-profil">PROFIL</a></li>
+		<li><a data-toggle="tab" href="#right-parcourir">PARCOURIR</a></li>
 	</ul>
-	<div class="bloc-bottom">
-		<ul class="list-all-profil" style="display:none;">
+	<div class="bloc-bottom tab-content">
+		<div id="right-profil" class="tab-pane fade in active">
+			<div class="avatar-profil" style="background: url(<%= gravatar_src(user) %>); background-size: cover"></div>
+			<span class="username"><%= user.username %></span>
+			<p class="description-profil"><%= user.description %></p>
+			<div class="bloc-pop">
+				<span tabindex="0" class="glyphicon glyphicon-option-horizontal" data-trigger="focus" data-toggle="popover" data-content="Email : <%= user.mail %>"></span>
+			</div>
+			<div class="button">
+				<%= link_to 'mon compte'.upcase, edit_user_path(current_user) %>
+			</div>
+		</div>
+		<ul id="right-parcourir" class="list-all-profil tab-pane fade">
 			<% User.where("username LIKE ?", "%#{params[:username]}%").each do |user| %>
 			<div>
 				<li><%= gravatar(user, 40) %></li>
@@ -18,28 +29,15 @@
 				<li><%= user.description %></li>
 				<div class="action-sidebar-profil">
 					<% if current_user == user %>
-						<li><%= link_to 'Edit', edit_user_path(user) %></li>
+					<li><%= link_to 'Edit', edit_user_path(user) %></li>
 					<% end %>
 					<% if current_user.admin %>
-						<li><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+					<li><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></li>
 					<% end %>
 				</div>
 			</div>
 			<% end %>
-		</ul>
-		<div class="my-profil-sidebar">
-			<div class="avatar-profil" style="background: url(<%= gravatar_src(user) %>); background-size: cover">
-			</div>
-			<span class="username"><%= user.username %></span>
-			<p class="description-profil"><%= user.description %></p>
-			<div class="bloc-pop">
-				<span tabindex="0" class="glyphicon glyphicon-option-horizontal" data-trigger="focus" data-toggle="popover" data-content="Email : <%= user.mail %>"></span>
-
-			</div>
-			<div class="button">
-				<%= link_to 'mon compte'.upcase, edit_user_path(current_user) %>
-			</div>
-		</div>
+	    </ul>
 	</div>
 </div>
 <div class="info-user-pop popover">

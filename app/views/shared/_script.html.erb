@@ -65,7 +65,6 @@ $(document).ready(function(){
 			}
 		});
 
-
 		// navigation
 		if(localStorage.getItem('hide') === 'true'){
 			menuToggle();
@@ -85,48 +84,27 @@ $(document).ready(function(){
 		$('.bloc-bottom').perfectScrollbar();
 
 		if(localStorage.getItem('rightSidebarView') !== 'parcourir'){
-			$('.my-profil-sidebar').css('display','block');
-			$('.list-all-profil').css('display','none');
+			$(".right-tabs a[href='#right-profil']").tab('show');
 			$('.bloc-bottom').scrollTop(0);
 			$('.bloc-bottom').perfectScrollbar('update');
-
-			$('.parcourir-sidebar').removeClass('active-li-sidebar');
-			$('.profil-sidebar').addClass('active-li-sidebar');
 		} else {
-			$('.my-profil-sidebar').css('display','none');
-			$('.list-all-profil').css('display','block');
-
-			$('.parcourir-sidebar').addClass('active-li-sidebar');
-			$('.profil-sidebar').removeClass('active-li-sidebar');
+			$(".right-tabs a[href='#right-parcourir']").tab('show');
 		}
-		
-		
-		$(document).on('click', '.parcourir-sidebar', function(){
-			localStorage.setItem('rightSidebarView', 'parcourir');
-			$('.my-profil-sidebar').css('display','none');
-			$('.list-all-profil').css('display','block');
 
-			$('.parcourir-sidebar').addClass('active-li-sidebar');
-			$('.profil-sidebar').removeClass('active-li-sidebar');
+		$(document).on('click', "a[href='#right-profil']", function(){
+			localStorage.setItem('rightSidebarView', 'mon-profil');
 		});
 
-		$(document).on('click', '.profil-sidebar', function(){
-			localStorage.setItem('rightSidebarView', 'mon-profil');
-			$('.my-profil-sidebar').css('display','block');
-			$('.list-all-profil').css('display','none');
+		$(document).on('click', "a[href='#right-parcourir']", function(){
+			localStorage.setItem('rightSidebarView', 'parcourir');
 			$('.bloc-bottom').scrollTop(0);
 			$('.bloc-bottom').perfectScrollbar('update');
-
-			$('.parcourir-sidebar').removeClass('active-li-sidebar');
-			$('.profil-sidebar').addClass('active-li-sidebar');
 		});
-
 
 		$('.bloc-pop span').click(function(){
 			$(this).css('outline','none');
 			$('.popover').toggleClass('active-pop');
 		});
-		
 
 });
 

@@ -538,7 +538,7 @@ tr img, .action-music{
 
 .center-vertical{
 	position: absolute;
-	top: 50%;
+	top: 37%;
 	transform: translate(-50%, -50%);
 	text-align: center;
 	width: 100%;
@@ -666,7 +666,11 @@ tr img, .action-music{
 	border: 0px !important;
 }
 
-.nav-profil.nav-tabs {
+.right-tabs {
+	margin-bottom: 20px;
+}
+
+.nav-profil.nav-tabs, .right-tabs.nav-tabs {
 	border-bottom: none;
 	li a {
 		color: #d1d1d1;
