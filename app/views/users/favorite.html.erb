@@ -4,11 +4,10 @@
 			<%= render partial: "shared/sidebar" %>
 			<div class="page-content">
 				<div class="head">
-					<%= render partial: "shared/player", locals: {songs: @user.favorite_songs.map(&:song)} %>
+					<%= render partial: "shared/player", locals: {songs: @user.favorite_songs.map(&:song), continue: true} %>
 					<h1 class="title-head"><%= @user == current_user ? "MES FAVORIS" : "FAVORIS DE #{@user.username}" %></h1>
 					<%= render partial: "shared/user_badge" %>
 					<%= render partial: 'shared/song_search' %>
-				
 				</div>
 				<div class="container-fluid">
 					<!-- <%= image_tag('zikror.png', class: "bg-content") %> -->

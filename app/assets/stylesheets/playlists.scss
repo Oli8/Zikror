@@ -67,3 +67,12 @@
 .parcourir-list{
 	border: none !important;
 }
+
+#player-checkbox {
+	position: absolute;
+	top: 45px;
+	right: 350px;
+	input[type=checkbox] {
+		opacity: 1;
+	}
+}

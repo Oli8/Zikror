@@ -54,7 +54,7 @@ $(document).ready(function(){
 		});
 
 		$('#mejs').on('ended', function(){
-			if(location.href.indexOf('playlists') !== -1){
+			if($('#continue').is(':checked')){
 				$('.th-music img').eq(index).attr('src', imgs.play);
 				index = (index + 1) % $('.th-music img').length;
 				$('.th-music img').eq(index).attr('src', imgs.pause);

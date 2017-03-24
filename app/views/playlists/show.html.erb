@@ -5,7 +5,7 @@
 	<%= render partial: "shared/sidebar" %>
 	<div class="page-content">
 		<div class="head">
-			<%= render partial: "shared/player", locals: {songs: @playlist.songs} %>
+			<%= render partial: "shared/player", locals: {songs: @playlist.songs, continue: true} %>
 			<h1 class="title-head"><%= @playlist.user == current_user ? "MA PLAYLIST" : "PLAYLIST DE #{@playlist.user.username}" %></h1>
 			<%= render partial: "shared/user_badge" %>
 			<%= form_tag('/playlists', method: 'get', class: "form-search form-search-musique") do %>
