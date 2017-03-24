@@ -1,5 +1,10 @@
+<% continue ||= false %>
 <div class="audio">
 	<% unless songs.empty? %>
 		<audio id="mejs" src="/PETIT_BISCUIT_Sunset_Lover.mp3" class="mejs__player"></audio>
+		<div id="player-checkbox">
+			<input type="checkbox" name="continue" id="continue" <%= "checked" if continue %>>
+			<label for="continue">Lecture continue</label>
+		</div>
 	<% end %>
 </div>
