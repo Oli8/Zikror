@@ -85,3 +85,8 @@ body, html {
 .active-pop{
   display: block;
 }
+
+.tooltip-inner {
+  max-width: none;
+  white-space: nowrap;
+}
