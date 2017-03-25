@@ -17,9 +17,9 @@
 						<td><%= key+1 %></td>
 						<td>
 							<% if has_favorite(song) %>
-								<%= link_to image_tag('like_red.png'), '#', class: "action-zik favorite", data: {:song => song.id} %>
+								<%= link_to image_tag('like_red.png'), '#', class: "action-zik favorite", 'title': 'Retirer des favoris', data: {:song => song.id, :toggle => 'tooltip'} %>
 							<% else %>
-								<%= link_to image_tag('like.png'), '#', class: "action-zik favorite", data: {:song => song.id} %>
+								<%= link_to image_tag('like.png'), '#', class: "action-zik favorite", 'title': "Ajouter aux favoris", data: {:song => song.id, :toggle => 'tooltip'} %>
 							<% end %>
 						</td>
 						<td class="th-music">
@@ -30,14 +30,14 @@
 						<td><%= song.genre %></td>
 						<td><%= song.year %></td>
 						<td class="th-action">
-							<a data-song="<%= song.id %>" data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a>
-							<a href="<%= song.file.url %>" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
+							<span data-toggle="tooltip" title='Ajouter à une playlist'> <a data-song="<%= song.id %>" data-toggle="modal" data-target="#exampleModalLong" class="action-zik"><%= image_tag('playlist.png') %></a> </span>
+							<a href="<%= song.file.url %>" data-toggle="tooltip" title="Télécharger" class="action-zik" download><%= image_tag('download-arrow.png') %></a>
 							<% if owner?(song) %>
-								<%= link_to image_tag('new-file.png'), edit_song_path(song) ,class: "action-zik" %>
+								<%= link_to image_tag('new-file.png'), edit_song_path(song) ,class: "action-zik", 'data-toggle': "tooltip", 'title': "Editer" %>
 								<% if playlist %>
-									<%= link_to raw(image_tag('delete-button.png')), { action: "remove", song_id: song.id, playlist_id: @playlist.id }, class: "action-zik", data: { confirm: "Êtes-vous certain de vouloir supprimer #{song.title} de cette playlist ?" } %>
+									<%= link_to raw(image_tag('delete-button.png')), { action: "remove", song_id: song.id, playlist_id: @playlist.id }, class: "action-zik", 'data-toggle': "tooltip", 'title': "Supprimer", data: { confirm: "Êtes-vous certain de vouloir supprimer #{song.title} de cette playlist ?" } %>
 								<% else %>
-									<%= link_to image_tag('delete-button.png'), song, class: "action-zik", method: :delete, data: { confirm: 'Êtes-vous sûr de vouloir supprimer cette musique ?' } %>
+									<%= link_to image_tag('delete-button.png'), song, class: "action-zik", 'data-toggle': "tooltip", 'title': "Supprimer", method: :delete, data: { confirm: 'Êtes-vous sûr de vouloir supprimer cette musique ?' } %>
 								<% end %>
 							<% end %>
 						</td>

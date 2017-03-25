@@ -170,10 +170,20 @@ $(document).ready(function() {
 	    var that = this;
 	    $.get(`/songs/favorite/${song_id}`, function(data){
 			var img = $(that).children().first();
-			if(img.attr('src').indexOf('red') !== -1)
+			if(img.attr('src').indexOf('red') !== -1){
 				img.attr('src', imgs.like);
-			else
+				$(that).tooltip('hide')
+		          .attr('data-original-title', 'Ajouter aux favoris')
+		          .tooltip('fixTitle')
+		          .tooltip('show');
+			}
+			else{
 				img.attr('src', imgs.liked);
+				$(that).tooltip('hide')
+		          .attr('data-original-title', 'Retirer des favoris')
+		          .tooltip('fixTitle')
+		          .tooltip('show');			
+			}
 		});
 	});
 });
@@ -204,3 +214,16 @@ function menuToggle(){
 	$('.close-img').toggleClass('clicked');
 	$('.show-img').toggleClass('clicked');
 }
+
+//initialising tooltips
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+
+$(document).ready(function () {
+  $("tr").tooltip({
+    'selector': '',
+    'placement': 'top',
+    'container':'body'
+  });
+});
