@@ -14,6 +14,8 @@
 						<ul class="nav-profil nav nav-tabs">
 							<li class="active"><a data-toggle="tab" href="#songs">MUSIQUES</a></li>
 							<li><a data-toggle="tab" href="#playlists">PLAYLISTS</a></li>
+							<li><a data-toggle="tab" href="#followers"><%= "FOLLOWERS (#{@user.followers.size})"%></a></li>
+							<li><a data-toggle="tab" href="#following"><%= "FOLLOWING (#{@user.following.size})"%></a></li>
 							<div class="menu-profil">
 								<%= image_tag('menu-show.png', class: "show-img", style:"display:none;") %>
 								<%= image_tag('multiply.png', class: "close-img") %>
@@ -41,6 +43,14 @@
 											<span class="nbr-title"><%= pluralize(playlist.songs.size, 'titre') %></span>
 										</div>
 									<% end %>
+								</div>
+								<!-- Followers tab content -->
+								<div id="followers" class="tab-pane fade">
+									<%= render partial: "user_follow_list", locals: {users: @user.followers} %>
+								</div>
+								<!-- Following tab content -->
+								<div id="following" class="tab-pane fade">
+									<%= render partial: "user_follow_list", locals: {users: @user.following} %>
 								</div>
 						</div>
 						<div class="profil-side col-lg-3 col-md-4">

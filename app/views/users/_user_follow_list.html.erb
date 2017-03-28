@@ -1,0 +1,7 @@
+<% users.each do |user_followed| %>
+	<%= link_to raw("
+		<figure class='follow-fig'>
+			#{gravatar(user_followed, 100)}
+			<figcaption>#{user_followed.username}</figcaption>
+		</figure>"), user_path(user_followed) %>
+<% end %>
