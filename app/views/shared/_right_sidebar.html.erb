@@ -14,6 +14,10 @@
 			<div class="avatar-profil" style="background: url(<%= gravatar_src(user) %>); background-size: cover"></div>
 			<span class="username"><%= user.username %></span>
 			<p class="description-profil"><%= user.description %></p>
+			<% if user != current_user %>
+				<% follow_link_text = current_user.follow?(user) ? "Ne plus suivre" : "Suivre" %>
+				<%= link_to follow_link_text, "/users/follow/#{user.id}" ,class: 'follow-button', method: :put, remote: true %>
+			<% end %>
 			<div class="bloc-pop">
 				<span tabindex="0" class="glyphicon glyphicon-option-horizontal" data-trigger="focus" data-toggle="popover" data-content="Email : <%= user.mail %>"></span>
 			</div>
@@ -49,3 +53,9 @@
 	<%= image_tag('logout.png') %>
 	<span class="span-deconnect"><%= link_to "Deconnexion", logout_path, :method => "delete" %></span>
 </div>
+
+<script type="text/javascript">
+$(document).on('ajax:success', '.follow-button', function(status, data, xhr){
+	return $('.follow-button').text($('.follow-button').text() == 'Suivre' ? 'Ne plus suivre' : 'Suivre');
+});
+</script>

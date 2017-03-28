@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :songs
   resources :users, :except => [:new, :index]
   get '/users/:id/favorite', to: 'users#favorite'
+  put '/users/follow/:id', to: 'users#follow'
   get '/login', to: 'session#new'
   post '/login', to: 'session#create'
   delete '/logout', to: 'session#destroy'

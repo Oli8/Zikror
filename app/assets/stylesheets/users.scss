@@ -20,7 +20,7 @@ h1{
 
 li{list-style-type: none;}
 
-a{
+a, a:focus {
 	text-decoration: none;
 	color: #8e8e8e;
 }
@@ -683,6 +683,24 @@ tr img, .action-music{
 	}
 	li:last-of-type {
 		border-right: none;
+	}
+}
+
+.follow-fig {
+	margin: 1%;
+	text-align: center;
+	padding: 2%;
+	border: 3px dotted #454545;
+	display: inline-block;
+	transition: all 0.3s;
+	&:hover {
+		border-style: solid;
+		border-color: lighten(#454545, 45);
+	}
+	figcaption {
+		margin-top: 15px;
+		font-size: 1.15em;
+		font-weight: bold;
 	}
 }
 
