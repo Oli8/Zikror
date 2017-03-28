@@ -72,6 +72,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def follow
+    user = User.find(params[:id])
+    unless current_user.follow?(user)
+      current_user.follow(user)
+      render plain: "#{current_user.username} is now following #{user.username}"
+    else
+      current_user.unfollow(user)
+      render plain: "#{current_user.username} is not following #{user.username} anymore"
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

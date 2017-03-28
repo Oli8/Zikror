@@ -33,7 +33,7 @@ class User < ApplicationRecord
 
 	# Follows a user.
 	def follow(other_user)
-		self.following << other_user
+		self.active_relationships.create(followed: other_user)
 	end
 
 	# Unfollows a user.
