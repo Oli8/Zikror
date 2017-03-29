@@ -7,7 +7,7 @@ class SongsController < ApplicationController
   # GET /songs.json
   def index
     genre = params[:genre] == 'Genre' ? '' : params[:genre]
-    @songs = Song.where("(title LIKE ? OR artist LIKE ?) AND genre LIKE ? AND private = ?", "%#{params[:query]}%", "%#{params[:query]}%", "%#{genre}%", false).paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
+    @songs = Song.where("(title LIKE ? OR artist LIKE ?) AND genre LIKE ? AND private = ?", "%#{params[:query]}%", "%#{params[:query]}%", "%#{genre}%", false)
     flash.now[:notice] = "Nothing found" if @songs.empty?
   end
 

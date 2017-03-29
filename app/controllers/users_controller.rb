@@ -7,9 +7,9 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     unless params[:username].nil?
-      @users =  User.where("username LIKE ?", "%#{params[:username]}%").paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
+      @users =  User.where("username LIKE ?", "%#{params[:username]}%")
     else
-      @users = User.paginate(page: params[:page], per_page: ITEMS_PER_PAGE)
+      @users = User.all
     end
   end
 
