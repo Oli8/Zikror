@@ -1,14 +1,13 @@
-<% 
-if @playlist
+<% if @playlist || @user.songs
 	res = [];
-	data = @playlist.songs.map{|i| i.genre.upcase}
-	@playlist.songs.map{|i| i.genre.upcase}.uniq.each{|v|
-		value = (data.count(v).to_f / @playlist.songs.uniq.size * 100).to_i
+	data = @playlist ? @playlist.songs : @user.songs.select{|i| i.private == false}
+	data = data.map{|i| i.genre.upcase}
+	data.uniq.each{|v|
+		value = (data.count(v).to_f / data.size * 100).to_i
 		res << {label: v, value: value}
 	} 
-	res = res.to_json
-end 
-%>
+	res = res.to_json	
+end %>
 <% playlist ||= false %>
 <%= form_tag(request.env['PATH_INFO'], method: 'get', class: "form-search form-search-profil") do %>
 <div class="form-group">
@@ -20,7 +19,7 @@ end
 	<ul class="right-tabs nav nav-tabs">
 		<li class="active"><a data-toggle="tab" href="#right-profil">PROFIL</a></li>
 		<li><a data-toggle="tab" href="#right-parcourir">PARCOURIR</a></li>
-		<% if playlist %>
+		<% if data %>
 			<li><a data-toggle="tab" href="#right-stats">STATS</a></li>
 		<% end %>
 	</ul>
@@ -54,8 +53,8 @@ end
 			<% end %>
 	    </ul>
 	    <div id="right-stats" class="tab-pane fade in active">
-	    	<h5>Genre</h5>
-	    	<div id="myfirstchart" style="height: 250px;"></div>
+	    	<h5>Genre %</h5>
+	    	<div id="chart-genre" style="height: 250px;"></div>
 		</div>
 	</div>
 </div>
@@ -72,11 +71,13 @@ end
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>	
 <script>	
-  Morris.Donut({
-  element: 'myfirstchart',
+// Copyright (c) 2013, Olly Smith
+// All rights reserved.
+Morris.Donut({
+  element: 'chart-genre',
   data: <%= raw(res) %>,
   colors : ['#D24D57', '#D91E18', '#96281B', '#EF4836', '#D64541', '#C0392B', '#CF000F', '#EC644B']
 });
 
-$("#myfirstchart svg text").attr('fill', "#8e8e8e");
+$("#chart-genre svg text").attr('fill', "#8e8e8e");
 </script>
