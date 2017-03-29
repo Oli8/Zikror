@@ -1,3 +1,15 @@
+<% 
+if @playlist
+	res = [];
+	data = @playlist.songs.map{|i| i.genre.upcase}
+	@playlist.songs.map{|i| i.genre.upcase}.uniq.each{|v|
+		value = (data.count(v).to_f / @playlist.songs.uniq.size * 100).to_i
+		res << {label: v, value: value}
+	} 
+	res = res.to_json
+end 
+%>
+<% playlist ||= false %>
 <%= form_tag(request.env['PATH_INFO'], method: 'get', class: "form-search form-search-profil") do %>
 <div class="form-group">
 	<%= search_field_tag(:username, params[:username] || '', name: 'username', placeholder: 'Recherche de profil') %>
@@ -8,6 +20,9 @@
 	<ul class="right-tabs nav nav-tabs">
 		<li class="active"><a data-toggle="tab" href="#right-profil">PROFIL</a></li>
 		<li><a data-toggle="tab" href="#right-parcourir">PARCOURIR</a></li>
+		<% if playlist %>
+			<li><a data-toggle="tab" href="#right-stats">STATS</a></li>
+		<% end %>
 	</ul>
 	<div class="bloc-bottom tab-content">
 		<div id="right-profil" class="tab-pane fade in active">
@@ -38,6 +53,10 @@
 			</div>
 			<% end %>
 	    </ul>
+	    <div id="right-stats" class="tab-pane fade in active">
+	    	<h5>Genre</h5>
+	    	<div id="myfirstchart" style="height: 250px;"></div>
+		</div>
 	</div>
 </div>
 <div class="info-user-pop popover">
@@ -49,3 +68,15 @@
 	<%= image_tag('logout.png') %>
 	<span class="span-deconnect"><%= link_to "Deconnexion", logout_path, :method => "delete" %></span>
 </div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>	
+<script>	
+  Morris.Donut({
+  element: 'myfirstchart',
+  data: <%= raw(res) %>,
+  colors : ['#D24D57', '#D91E18', '#96281B', '#EF4836', '#D64541', '#C0392B', '#CF000F', '#EC644B']
+});
+
+$("#myfirstchart svg text").attr('fill', "#8e8e8e");
+</script>
