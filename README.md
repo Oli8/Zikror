@@ -1,26 +1,25 @@
-# README
+<h1> <img src="https://gitlab.com/Oli8/Ruby_on_Rails_Projet_Libre/raw/master/app/assets/images/logo-zkr.png" alt="Zikror logo" width="50"/> Zikror </h1>
 
-gem install bcrypt
+## Démarrer
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+1. Installer Rails si ce n'est pas déjà fait:
 
-Things you may want to cover:
+        $ gem install rails
 
-* Ruby version
+1. Cloner le dossier:
 
-* System dependencies
+        $ git clone git@github.com:Oli8/Zikror.git
+        $ cd Zikror
+        
+3. Installer les dépendances:
 
-* Configuration
+        $ bundle install
 
-* Database creation
+4. Créer la base de données:
 
-* Database initialization
+        $ rake db:create
+        $ rake db:migrate
 
-* How to run the test suite
+5. Lancer l'application:
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+        $ bin/rails s
