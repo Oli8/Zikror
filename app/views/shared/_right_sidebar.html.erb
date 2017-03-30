@@ -1,6 +1,15 @@
-<% if @playlist || @user.songs
+<% playlist ||= false 
+favorite ||= false 
+user_songs ||= false
+search_songs ||= false
+%>
+<% if playlist || user_songs || favorite || search_songs
 	res = [];
-	data = @playlist ? @playlist.songs : @user.songs.select{|i| i.private == false}
+	if playlist || user_songs
+		data = playlist ? @playlist.songs : @user.songs.select{|i| i.private == false}
+	end	
+	data = @user.favorite_songs.map(&:song) if favorite
+	data = @songs if search_songs
 	data = data.map{|i| i.genre.upcase}
 	data.uniq.each{|v|
 		value = (data.count(v).to_f / data.size * 100).to_i
@@ -8,7 +17,6 @@
 	} 
 	res = res.to_json	
 end %>
-<% playlist ||= false %>
 <%= form_tag(request.env['PATH_INFO'], method: 'get', class: "form-search form-search-profil") do %>
 <div class="form-group">
 	<%= search_field_tag(:username, params[:username] || '', name: 'username', placeholder: 'Recherche de profil') %>
