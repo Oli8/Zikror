@@ -1,15 +1,8 @@
-<% playlist ||= false 
-favorite ||= false 
-user_songs ||= false
-search_songs ||= false
-%>
-<% if playlist || user_songs || favorite || search_songs
+<% 
+data ||= false 
+
+if data
 	res = [];
-	if playlist || user_songs
-		data = playlist ? @playlist.songs : @user.songs.select{|i| i.private == false}
-	end	
-	data = @user.favorite_songs.map(&:song) if favorite
-	data = @songs if search_songs
 	data = data.map{|i| i.genre.upcase}
 	data.uniq.each{|v|
 		value = (data.count(v).to_f / data.size * 100).to_i
