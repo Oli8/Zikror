@@ -1,15 +1,4 @@
-<% 
-data ||= false 
-
-if data
-	res = [];
-	data = data.map{|i| i.genre.upcase}
-	data.uniq.each{|v|
-		value = (data.count(v).to_f / data.size * 100).to_i
-		res << {label: v, value: value}
-	} 
-	res = res.to_json	
-end %>
+<% data ||= false  %>
 <%= form_tag(request.env['PATH_INFO'], method: 'get', class: "form-search form-search-profil") do %>
 <div class="form-group">
 	<%= search_field_tag(:username, params[:username] || '', name: 'username', placeholder: 'Recherche de profil') %>
@@ -36,7 +25,7 @@ end %>
 				<%= link_to 'mon compte'.upcase, edit_user_path(current_user) %>
 			</div>
 		</div>
-		<ul id="right-parcourir" class="list-all-profil tab-pane fade">
+		<ul id="right-parcourir" class="list-all-profil tab-pane fade active">
 			<% User.where("username LIKE ?", "%#{params[:username]}%").each do |user| %>
 			<div>
 				<li><%= gravatar(user, 40) %></li>
@@ -76,9 +65,10 @@ end %>
 // All rights reserved.
 Morris.Donut({
   element: 'chart-genre',
-  data: <%= raw(res) %>,
+  data: <%= raw(getData(data)) if data %>,
   colors : ['#D24D57', '#D91E18', '#96281B', '#EF4836', '#D64541', '#C0392B', '#CF000F', '#EC644B']
 });
 
 $("#chart-genre svg text").attr('fill', "#8e8e8e");
+
 </script>
