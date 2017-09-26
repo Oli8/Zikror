@@ -8,7 +8,7 @@
 
 1. Cloner le dossier:
 
-        $ git clone git@github.com:Oli8/Zikror.git
+        $ git clone https://gitlab.com/Oli8/Ruby_on_Rails_Projet_Libre.git Zikror
         $ cd Zikror
         
 3. Installer les dépendances:
