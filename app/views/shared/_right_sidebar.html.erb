@@ -1,3 +1,4 @@
+<% data ||= false  %>
 <%= form_tag(request.env['PATH_INFO'], method: 'get', class: "form-search form-search-profil") do %>
 <div class="form-group">
 	<%= search_field_tag(:username, params[:username] || '', name: 'username', placeholder: 'Recherche de profil') %>
@@ -8,6 +9,9 @@
 	<ul class="right-tabs nav nav-tabs">
 		<li class="active"><a data-toggle="tab" href="#right-profil">PROFIL</a></li>
 		<li><a data-toggle="tab" href="#right-parcourir">PARCOURIR</a></li>
+		<% if data %>
+			<li><a data-toggle="tab" href="#right-stats">STATS</a></li>
+		<% end %>
 	</ul>
 	<div class="bloc-bottom tab-content">
 		<div id="right-profil" class="tab-pane fade in active">
@@ -25,7 +29,7 @@
 				<%= link_to 'mon compte'.upcase, edit_user_path(current_user) %>
 			</div>
 		</div>
-		<ul id="right-parcourir" class="list-all-profil tab-pane fade">
+		<ul id="right-parcourir" class="list-all-profil tab-pane fade active">
 			<% User.where("username LIKE ?", "%#{params[:username]}%").each do |user| %>
 			<div>
 				<li><%= gravatar(user, 40) %></li>
@@ -42,6 +46,10 @@
 			</div>
 			<% end %>
 	    </ul>
+	    <div id="right-stats" class="tab-pane fade in active">
+	    	<h5>Genre %</h5>
+	    	<div id="chart-genre" style="height: 250px;"></div>
+		</div>
 	</div>
 </div>
 <div class="info-user-pop popover">
@@ -58,4 +66,19 @@
 $(document).on('ajax:success', '.follow-button', function(status, data, xhr){
 	return $('.follow-button').text($('.follow-button').text() == 'Suivre' ? 'Ne plus suivre' : 'Suivre');
 });
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>	
+<script>	
+// Copyright (c) 2013, Olly Smith
+// All rights reserved.
+Morris.Donut({
+  element: 'chart-genre',
+  data: <%= raw(getData(data)) if data %>,
+  colors : ['#D24D57', '#D91E18', '#96281B', '#EF4836', '#D64541', '#C0392B', '#CF000F', '#EC644B']
+});
+
+$("#chart-genre svg text").attr('fill', "#8e8e8e");
+
 </script>

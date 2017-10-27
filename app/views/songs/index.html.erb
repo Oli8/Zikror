@@ -25,7 +25,7 @@
               <% end %>
             </div>
             <div class="profil-side col-lg-3 col-md-4">
-              <%= render partial: "shared/right_sidebar", locals: {user: current_user} %>
+              <%= render partial: "shared/right_sidebar", locals: {user: current_user, data: @songs} %>
             </div>
           </div>
         </div>
