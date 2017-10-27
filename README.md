@@ -23,3 +23,8 @@
 5. Lancer l'application:
 
         $ bin/rails s
+
+
+### Screenshot:  
+
+<img src="https://trello-attachments.s3.amazonaws.com/58ac5b25d3539b443f5055d3/58cf0e674766471cc372a704/17cf6dd86f7096d7c077941c5f7c025b/new-design-with-theme2.jpg" alt="Zikror interface" title="Zikror interface"/>
