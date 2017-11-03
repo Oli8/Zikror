@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 20170328143000) do
     t.datetime "updated_at",      null: false
     t.boolean  "admin"
     t.text     "description"
-    t.index ["mail"], name: "index_users_on_mail", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
 end
