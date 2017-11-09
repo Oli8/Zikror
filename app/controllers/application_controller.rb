@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
 	def set_constants
 		@slogan = 'Let the Music Flow'
+		@description = 'Écoutez de la musique simplement, créez vos playlist et plus encore sur Zikror !'
 	end
 
   def render404
