@@ -77,22 +77,24 @@ $(document).ready(function() {
 		$('.th-music img').eq(index).attr('src', imgs.play);
 	});
 
+	var music_played = [];
+	var songs_size = $('.th-music img').length
+	var songs_id = range(0, songs_size - 1);
 	$('#mejs').on('ended', function(){
+		$('.th-music img').eq(index).attr('src', imgs.play);
 		if($('#continue').is(':checked')){
-			$('.th-music img').eq(index).attr('src', imgs.play);
-			index = (index + 1) % $('.th-music img').length;
-			$('.th-music img').eq(index).attr('src', imgs.pause);
-			var url = $('.th-music img').eq(index).data('music');
-			$('audio').each(function(){
-				if($(this).attr('src') !== url){
-					$(this).attr('src', url);
-				}
-			    this.player.play();
-			});
-			$('.th-music img').eq(index).parent().parent().addClass('active-music').siblings().removeClass('active-music');
+			index = (index + 1) % songs_size;
+			play_song(index);
 		}
-		else{
+		else if($('#shuffle').is(':checked')){ // random
+			music_played.push(index);
+			if(music_played.length === songs_size){ // reset
+				music_played = [];
+			}
+			let playable = songs_id.filter(s => !music_played.includes(s));
 			$('.th-music img').eq(index).attr('src', imgs.play);
+			index = playable[Math.floor(Math.random() * playable.length)];
+			play_song(index);
 		}
 	});
 
@@ -213,6 +215,26 @@ function menuToggle(){
 	$('.nav-profil').toggleClass('clicked');
 	$('.close-img').toggleClass('clicked');
 	$('.show-img').toggleClass('clicked');
+}
+
+function play_song(index){
+	$('.th-music img').eq(index).attr('src', imgs.pause);
+	var url = $('.th-music img').eq(index).data('music');
+	$('audio').each(function(){
+		if($(this).attr('src') !== url){
+			$(this).attr('src', url);
+		}
+	    this.player.play();
+	});
+	$('.th-music img').eq(index).parent().parent().addClass('active-music').siblings().removeClass('active-music');
+}
+
+function range(start, end){
+	output = []
+	for(let i=start; i<=end; i++)
+		output.push(i);
+
+	return output;
 }
 
 //initialising tooltips
