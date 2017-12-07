@@ -2,9 +2,13 @@
 <div class="audio">
 	<% unless songs.empty? %>
 		<audio id="mejs" src="/PETIT_BISCUIT_Sunset_Lover.mp3" class="mejs__player"></audio>
-		<div id="player-checkbox">
-			<input type="checkbox" name="continue" id="continue" <%= "checked" if continue %>>
-			<label for="continue">Lecture continue</label>
-		</div>
+		<form>
+			<div id="player-checkbox">
+				<input type="radio" name="play_mode" id="continue" <%= "checked" if continue %>>
+				<label for="continue">Lecture continue</label>
+				<input type="radio" name="play_mode" id="shuffle">
+				<label for="shuffle">Aléatoire</label>
+			</div>
+		</form>
 	<% end %>
 </div>
