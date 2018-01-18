@@ -11,7 +11,7 @@ require 'mina/rvm'
 set :application_name, 'Zikror'
 set :domain, 'jerome-crete.me'
 set :user, 'olivier'
-set :deploy_to, "/var/www/html/Zikror"
+set :deploy_to, "/home/olivier/Zikror"
 set :repository, 'https://gitlab.com/Oli8/Ruby_on_Rails_Projet_Libre.git'
 set :branch, 'master'
 # set :rvm_use_path, '/etc/profile.d/rvm.sh'
@@ -79,7 +79,7 @@ task :deploy do
     invoke :'deploy:cleanup'
 
     on :launch do
-      # command "sudo service #{fetch(:user)} restart"
+      command "sudo service zikror restart"
     end
   end
 
